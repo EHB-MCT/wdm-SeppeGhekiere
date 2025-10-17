@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 
 function QuizResult({ userAnswers }) {
@@ -22,25 +21,12 @@ function QuizResult({ userAnswers }) {
       <h2>Quiz Result</h2>
       {result ? (
         <div>
-          <h3>{result.assessment}</h3>
-          <p>Naive: {result.personality.naive}</p>
-          <p>Influenced: {result.personality.influenced}</p>
-          <p>Skeptical: {result.personality.skeptical}</p>
-          <p>Independent: {result.personality.independent}</p>
-          <p>Introvert: {result.personality.introvert}</p>
-          <p>Extrovert: {result.personality.extrovert}</p>
-          <p>Shy: {result.personality.shy}</p>
-          <p>Expressive: {result.personality.expressive}</p>
+          <h3>Your dominant personality trait is:</h3>
+          <h2 className="dominant-trait">{result.dominantTrait}</h2>
         </div>
       ) : (
         <div className="loader"></div>
       )}
-      <h3>Your Answers:</h3>
-      <ul>
-        {userAnswers.map((answer, index) => (
-          <li key={index}>{answer}</li>
-        ))}
-      </ul>
     </div>
   );
 }

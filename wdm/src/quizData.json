@@ -1,4 +1,3 @@
-
 [
   {
     "question": "A stranger on the street asks you for money for a bus ticket. They seem distressed. What do you do?",
@@ -42,6 +41,237 @@
     "weights": {
       "optionA": {"introvert": 1, "shy": 1},
       "optionB": {"expressive": 1}
+    }
+  },
+  {
+    "question": "You're given a choice between a familiar favorite meal and a new, exotic dish you've never tried. You choose...",
+    "choices": {
+      "optionA": "The familiar favorite. You know you'll enjoy it.",
+      "optionB": "The new dish. You're curious to experience something different."
+    },
+    "weights": {
+      "optionA": {"cautious": 1},
+      "optionB": {"adventurous": 1}
+    }
+  },
+  {
+    "question": "When planning a vacation, you prefer to...",
+    "choices": {
+      "optionA": "...have a detailed itinerary with every day planned out.",
+      "optionB": "...have a general idea of where you're going but leave room for spontaneity."
+    },
+    "weights": {
+      "optionA": {"planner": 1},
+      "optionB": {"spontaneous": 1}
+    }
+  },
+  {
+    "question": "You're working on a group project. Your role is usually...",
+    "choices": {
+      "optionA": "...the leader, organizing the tasks and keeping everyone on track.",
+      "optionB": "...a contributor, focusing on your assigned tasks and supporting the leader."
+    },
+    "weights": {
+      "optionA": {"leader": 1},
+      "optionB": {"team_player": 1}
+    }
+  },
+  {
+    "question": "When faced with a difficult problem, you tend to...",
+    "choices": {
+      "optionA": "...break it down into smaller, manageable steps.",
+      "optionB": "...look at the big picture and brainstorm creative solutions."
+    },
+    "weights": {
+      "optionA": {"analytical": 1},
+      "optionB": {"creative": 1}
+    }
+  },
+  {
+    "question": "You've made a mistake at work. You...",
+    "choices": {
+      "optionA": "...try to fix it quietly before anyone notices.",
+      "optionB": "...own up to it immediately and ask for help if needed."
+    },
+    "weights": {
+      "optionA": {"shy": 1, "cautious": 1},
+      "optionB": {"responsible": 1}
+    }
+  },
+  {
+    "question": "Your ideal weekend involves...",
+    "choices": {
+      "optionA": "...relaxing at home with a good book or movie.",
+      "optionB": "...going out and socializing with friends."
+    },
+    "weights": {
+      "optionA": {"introvert": 1},
+      "optionB": {"extrovert": 1}
+    }
+  },
+  {
+    "question": "When you receive a compliment, you usually...",
+    "choices": {
+      "optionA": "...feel a little awkward and downplay it.",
+      "optionB": "...smile and say thank you graciously."
+    },
+    "weights": {
+      "optionA": {"shy": 1},
+      "optionB": {"confident": 1}
+    }
+  },
+  {
+    "question": "You're asked to give a presentation to a large group. You feel...",
+    "choices": {
+      "optionA": "...nervous and anxious.",
+      "optionB": "...excited for the opportunity to share your ideas."
+    },
+    "weights": {
+      "optionA": {"shy": 1, "introvert": 1},
+      "optionB": {"confident": 1, "expressive": 1}
+    }
+  },
+  {
+    "question": "You prefer to learn by...",
+    "choices": {
+      "optionA": "...reading and studying on your own.",
+      "optionB": "...discussing and debating ideas with others."
+    },
+    "weights": {
+      "optionA": {"analytical": 1, "introvert": 1},
+      "optionB": {"expressive": 1, "extrovert": 1}
+    }
+  },
+  {
+    "question": "When making a decision, you rely more on...",
+    "choices": {
+      "optionA": "...logic and reason.",
+      "optionB": "...your intuition and gut feeling."
+    },
+    "weights": {
+      "optionA": {"analytical": 1},
+      "optionB": {"intuitive": 1}
+    }
+  },
+  {
+    "question": "You find it easy to...",
+    "choices": {
+      "optionA": "...stick to a routine.",
+      "optionB": "...adapt to new situations."
+    },
+    "weights": {
+      "optionA": {"planner": 1},
+      "optionB": {"spontaneous": 1}
+    }
+  },
+  {
+    "question": "Your friends would describe you as...",
+    "choices": {
+      "optionA": "...a good listener.",
+      "optionB": "...a great storyteller."
+    },
+    "weights": {
+      "optionA": {"introvert": 1, "team_player": 1},
+      "optionB": {"expressive": 1, "extrovert": 1}
+    }
+  },
+  {
+    "question": "You're more of a...",
+    "choices": {
+      "optionA": "...realist.",
+      "optionB": "...dreamer."
+    },
+    "weights": {
+      "optionA": {"analytical": 1, "cautious": 1},
+      "optionB": {"creative": 1, "intuitive": 1}
+    }
+  },
+  {
+    "question": "You feel most energized when...",
+    "choices": {
+      "optionA": "...you have time to yourself to recharge.",
+      "optionB": "...you're surrounded by people and activity."
+    },
+    "weights": {
+      "optionA": {"introvert": 1},
+      "optionB": {"extrovert": 1}
+    }
+  },
+  {
+    "question": "When it comes to rules, you believe...",
+    "choices": {
+      "optionA": "...they are important for maintaining order.",
+      "optionB": "...they are meant to be challenged."
+    },
+    "weights": {
+      "optionA": {"planner": 1, "cautious": 1},
+      "optionB": {"adventurous": 1, "spontaneous": 1}
+    }
+  },
+  {
+    "question": "You're more likely to be...",
+    "choices": {
+      "optionA": "...lost in thought.",
+      "optionB": "...the center of attention."
+    },
+    "weights": {
+      "optionA": {"introvert": 1, "analytical": 1},
+      "optionB": {"extrovert": 1, "confident": 1}
+    }
+  },
+  {
+    "question": "You enjoy activities that are...",
+    "choices": {
+      "optionA": "...predictable and safe.",
+      "optionB": "...thrilling and a bit risky."
+    },
+    "weights": {
+      "optionA": {"cautious": 1},
+      "optionB": {"adventurous": 1}
+    }
+  },
+  {
+    "question": "You find it easy to forgive others.",
+    "choices": {
+      "optionA": "Yes",
+      "optionB": "No"
+    },
+    "weights": {
+      "optionA": {"team_player": 1},
+      "optionB": {"independent": 1}
+    }
+  },
+  {
+    "question": "You are good at keeping secrets.",
+    "choices": {
+      "optionA": "Yes",
+      "optionB": "No"
+    },
+    "weights": {
+      "optionA": {"responsible": 1},
+      "optionB": {"expressive": 1}
+    }
+  },
+  {
+    "question": "You enjoy being the one to make plans.",
+    "choices": {
+      "optionA": "Yes",
+      "optionB": "No"
+    },
+    "weights": {
+      "optionA": {"leader": 1, "planner": 1},
+      "optionB": {"team_player": 1, "spontaneous": 1}
+    }
+  },
+  {
+    "question": "You would rather have a few close friends than a large group of acquaintances.",
+    "choices": {
+      "optionA": "Yes",
+      "optionB": "No"
+    },
+    "weights": {
+      "optionA": {"introvert": 1},
+      "optionB": {"extrovert": 1}
     }
   }
 ]

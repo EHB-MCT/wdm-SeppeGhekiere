@@ -25,8 +25,8 @@ function Quiz() {
         {quizFinished ? (
           <QuizResult userAnswers={userAnswers} />
         ) : (
-          <div>
-            <h2>{quizData[currentQuestion].question}</h2>
+          <div className="question-container">
+            <h2 className="question-text">{quizData[currentQuestion].question}</h2>
             <QuizChoices
               choices={quizData[currentQuestion].choices}
               onSelect={handleSelect}

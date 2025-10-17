@@ -1,4 +1,3 @@
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -14,16 +13,7 @@ app.post('/api/quiz-results', (req, res) => {
   const { answers } = req.body;
   console.log('Received answers:', answers);
 
-  const personality = {
-    naive: 0,
-    influenced: 0,
-    skeptical: 0,
-    independent: 0,
-    introvert: 0,
-    extrovert: 0,
-    shy: 0,
-    expressive: 0,
-  };
+  const personality = {};
 
   answers.forEach((answer, index) => {
     const question = quizData[index];
@@ -33,32 +23,23 @@ app.post('/api/quiz-results', (req, res) => {
       for (const trait in weights) {
         if (personality.hasOwnProperty(trait)) {
           personality[trait] += weights[trait];
+        } else {
+          personality[trait] = weights[trait];
         }
       }
     }
   });
 
-  let assessment = 'You are a complex individual.';
-  if (personality.introvert > 1) {
-    assessment = 'You seem to be more of an introvert.';
-  } else if (personality.extrovert > 1) {
-    assessment = 'You seem to be more of an extrovert.';
+  let dominantTrait = '';
+  let maxScore = 0;
+  for (const trait in personality) {
+    if (personality[trait] > maxScore) {
+      maxScore = personality[trait];
+      dominantTrait = trait;
+    }
   }
 
-  if (personality.shy > 1) {
-    assessment += ' You might also be a bit shy.';
-  } else if (personality.expressive > 1) {
-    assessment += ' You are also quite expressive.';
-  }
-
-  if (personality.naive > 0 && personality.influenced > 0) {
-    assessment += ' You tend to be a bit naive and easily influenced.';
-  } else if (personality.skeptical > 0) {
-    assessment += ' You are a skeptical and independent thinker.';
-  }
-
-
-  res.json({ personality, assessment });
+  res.json({ dominantTrait });
 });
 
 app.listen(port, () => {
