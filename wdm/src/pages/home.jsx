@@ -1,8 +1,8 @@
 function Home({ navigateTo }) {
 	return (
 		<div>
-			<h1>Welcome to the Random Knowledge Quiz</h1>
-			<p>Test your knowledge with random questions!</p>
+			<h1>Welcome to the Personality Quiz</h1>
+			<p>Find your personality with random questions!</p>
 			<button className="btn" onClick={() => navigateTo('quiz')}>Start Quiz</button>
 		</div>
 	);
