@@ -3,7 +3,7 @@ function Home({ navigateTo }) {
 		<div>
 			<h1>Welcome to the Random Knowledge Quiz</h1>
 			<p>Test your knowledge with random questions!</p>
-			<button onClick={() => navigateTo('quiz')}>Start Quiz</button>
+			<button className="btn" onClick={() => navigateTo('quiz')}>Start Quiz</button>
 		</div>
 	);
 }

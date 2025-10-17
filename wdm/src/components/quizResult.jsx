@@ -1,10 +1,11 @@
+
 import { useEffect, useState } from 'react';
 
 function QuizResult({ userAnswers }) {
   const [result, setResult] = useState(null);
 
   useEffect(() => {
-    fetch('http://backend:3000/api/quiz-results', {
+    fetch('/api/quiz-results', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -26,9 +27,13 @@ function QuizResult({ userAnswers }) {
           <p>Influenced: {result.personality.influenced}</p>
           <p>Skeptical: {result.personality.skeptical}</p>
           <p>Independent: {result.personality.independent}</p>
+          <p>Introvert: {result.personality.introvert}</p>
+          <p>Extrovert: {result.personality.extrovert}</p>
+          <p>Shy: {result.personality.shy}</p>
+          <p>Expressive: {result.personality.expressive}</p>
         </div>
       ) : (
-        <p>Analyzing your results...</p>
+        <div className="loader"></div>
       )}
       <h3>Your Answers:</h3>
       <ul>

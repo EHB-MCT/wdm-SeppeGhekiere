@@ -1,8 +1,8 @@
 function QuizChoices({ choices, onSelect }) {
   return (
     <div>
-      <button onClick={() => onSelect(choices.optionA)}>{choices.optionA}</button>
-      <button onClick={() => onSelect(choices.optionB)}>{choices.optionB}</button>
+      <button className="btn" onClick={() => onSelect(choices.optionA)}>{choices.optionA}</button>
+      <button className="btn" onClick={() => onSelect(choices.optionB)}>{choices.optionB}</button>
     </div>
   );
 }

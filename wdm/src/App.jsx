@@ -11,14 +11,14 @@ function App() {
   };
 
   return (
-    <>
+    <div className="quiz-container">
       <nav>
         <a onClick={() => navigateTo('home')}>Home</a>
         <a onClick={() => navigateTo('quiz')}>Quiz</a>
       </nav>
       {page === 'home' && <Home navigateTo={navigateTo} />}
       {page === 'quiz' && <Quiz />}
-    </>
+    </div>
   );
 }
 
