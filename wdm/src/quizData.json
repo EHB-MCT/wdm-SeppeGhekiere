@@ -1,0 +1,46 @@
+[
+  {
+    "question": "A stranger on the street asks you for money for a bus ticket. They seem distressed. What do you do?",
+    "choices": {
+      "optionA": "Give them the money without asking too many questions.",
+      "optionB": "Politely refuse, as you are skeptical of their story."
+    },
+    "weights": {
+      "optionA": {"naive": 1, "influenced": 1},
+      "optionB": {"skeptical": 1}
+    }
+  },
+  {
+    "question": "You see a social media post with a shocking headline from a source you've never heard of. What's your first reaction?",
+    "choices": {
+      "optionA": "Share it immediately; people need to know!",
+      "optionB": "Look for other sources to verify the information before sharing."
+    },
+    "weights": {
+      "optionA": {"naive": 1, "influenced": 1},
+      "optionB": {"skeptical": 1}
+    }
+  },
+  {
+    "question": "A salesperson gives you a long list of reasons why their product is the best on the market. You...",
+    "choices": {
+      "optionA": "...are inclined to believe them and consider buying the product.",
+      "optionB": "...listen politely but remain unconvinced and do your own research."
+    },
+    "weights": {
+      "optionA": {"influenced": 1},
+      "optionB": {"skeptical": 1}
+    }
+  },
+  {
+    "question": "Your friends are all excited about a new trend that you don't really understand. What do you do?",
+    "choices": {
+      "optionA": "Join in on the trend to be part of the group.",
+      "optionB": "Stay true to your own interests, even if it means not being part of the trend."
+    },
+    "weights": {
+      "optionA": {"influenced": 1},
+      "optionB": {"independent": 1}
+    }
+  }
+]
