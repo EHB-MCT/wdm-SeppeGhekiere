@@ -1,3 +1,4 @@
+
 [
   {
     "question": "A stranger on the street asks you for money for a bus ticket. They seem distressed. What do you do?",
@@ -22,25 +23,25 @@
     }
   },
   {
-    "question": "A salesperson gives you a long list of reasons why their product is the best on the market. You...",
+    "question": "You're at a party where you don't know many people. What are you most likely to do?",
     "choices": {
-      "optionA": "...are inclined to believe them and consider buying the product.",
-      "optionB": "...listen politely but remain unconvinced and do your own research."
+      "optionA": "Find a quiet corner and observe the room.",
+      "optionB": "Introduce yourself to new people and strike up conversations."
     },
     "weights": {
-      "optionA": {"influenced": 1},
-      "optionB": {"skeptical": 1}
+      "optionA": {"introvert": 1, "shy": 1},
+      "optionB": {"expressive": 1, "extrovert": 1}
     }
   },
   {
-    "question": "Your friends are all excited about a new trend that you don't really understand. What do you do?",
+    "question": "When you have a strong opinion on a topic, you usually...",
     "choices": {
-      "optionA": "Join in on the trend to be part of the group.",
-      "optionB": "Stay true to your own interests, even if it means not being part of the trend."
+      "optionA": "...keep it to yourself unless asked directly.",
+      "optionB": "...enjoy expressing your viewpoint in a discussion."
     },
     "weights": {
-      "optionA": {"influenced": 1},
-      "optionB": {"independent": 1}
+      "optionA": {"introvert": 1, "shy": 1},
+      "optionB": {"expressive": 1}
     }
   }
 ]
