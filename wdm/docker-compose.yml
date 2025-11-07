@@ -1,4 +1,4 @@
-
+version: "3.8"
 services:
   frontend:
     build: .
@@ -10,3 +10,14 @@ services:
     build: ./backend
     ports:
       - "3000:3000"
+    depends_on:
+      - mongodb # Ensures MongoDB starts first
+  mongodb:
+    image: mongodb/mongodb-atlas-local
+    ports:
+      - "27017:27017" # Exposes to host for external tools like Compass
+    volumes:
+      - mongodb-data:/data/db # Persists data
+
+volumes:
+  mongodb-data: # Named volume for data storage

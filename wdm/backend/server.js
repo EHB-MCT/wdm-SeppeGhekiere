@@ -2,38 +2,48 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const quizData = require("./quizData.json");
-const fs = require("fs");
-const path = require("path");
+const { MongoClient } = require("mongodb");
 
 const app = express();
 const port = 3000;
 
-app.use(cors());
-app.use(bodyParser.json());
+// MongoDB setup
+const uri = "mongodb://mongodb:27017"; // Local MongoDB URI
+const client = new MongoClient(uri);
+const db = client.db("quizdb"); // Database name
+const resultsCollection = db.collection("results"); // Collection name
 
-const resultsFilePath = path.join(__dirname, "results.json");
-
-// Helper function to read results from file
-const readResults = () => {
-	if (fs.existsSync(resultsFilePath)) {
-		const data = fs.readFileSync(resultsFilePath, "utf8");
-		return JSON.parse(data);
+// Connect to MongoDB
+async function connectDB() {
+	try {
+		await client.connect();
+		console.log("Connected to MongoDB");
+	} catch (err) {
+		console.error("Failed to connect to MongoDB:", err);
+		process.exit(1); // Exit if connection fails
 	}
-	return [];
-};
+}
+connectDB();
 
-// Helper function to write results to file
-const writeResults = (results) => {
-	fs.writeFileSync(resultsFilePath, JSON.stringify(results, null, 2), "utf8");
-};
+app.use(cors());
+app.use(bodyParser.json());	
+
+// Helper function to get all results from MongoDB
+async function getAllResults() {
+	return await resultsCollection.find({}).toArray();
+}
 
 // New GET endpoint to retrieve all results
-app.get("/api/results", (req, res) => {
-	const allResults = readResults();
-	res.json(allResults);
+app.get("/api/results", async (req, res) => {
+	try {
+		const allResults = await getAllResults();
+		res.json(allResults);
+	} catch (err) {
+		res.status(500).json({ error: "Failed to fetch results" });
+	}
 });
 
-app.post("/api/submit-result-with-email", (req, res) => {
+app.post("/api/submit-result-with-email", async (req, res) => {
 	const { answers, email } = req.body;
 	console.log("Received answers:", answers, "for email:", email);
 
@@ -63,14 +73,17 @@ app.post("/api/submit-result-with-email", (req, res) => {
 		}
 	}
 
-	// Store the result
-	const allResults = readResults();
-	allResults.push({ email, dominantTrait, personality, timestamp: new Date() });
-	writeResults(allResults);
-	res.json({ dominantTrait, personality });
+	// Store the result in MongoDB
+	try {
+		const result = { email, dominantTrait, personality, timestamp: new Date() };
+		await resultsCollection.insertOne(result);
+		res.json({ dominantTrait, personality });
+	} catch (err) {
+		res.status(500).json({ error: "Failed to save result" });
+	}
 });
 
-// Existing endpoint (if still needed, otherwise remove)
+// Existing endpoint (unchanged, as it doesn't store data)
 app.post("/api/quiz-results", (req, res) => {
 	const { answers } = req.body;
 	console.log("Received answers:", answers);
