@@ -1,10 +1,16 @@
 function QuizChoices({ choices, onSelect }) {
-  return (
-    <div className="choices-container">
-      <button className="btn" onClick={() => onSelect(choices.optionA)}>{choices.optionA}</button>
-      <button className="btn" onClick={() => onSelect(choices.optionB)}>{choices.optionB}</button>
-    </div>
-  );
+	return (
+		<div className="choices-grid">
+			<button className="choice-btn" onClick={() => onSelect("optionA")}>
+				<span style={{ fontSize: "1.25rem", marginRight: "0.5rem" }}>A</span>
+				{choices.optionA}
+			</button>
+			<button className="choice-btn" onClick={() => onSelect("optionB")}>
+				<span style={{ fontSize: "1.25rem", marginRight: "0.5rem" }}>B</span>
+				{choices.optionB}
+			</button>
+		</div>
+	);
 }
 
 export default QuizChoices;

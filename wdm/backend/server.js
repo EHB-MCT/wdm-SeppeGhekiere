@@ -1,41 +1,111 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const quizData = require("./quizData.json");
 const { MongoClient } = require("mongodb");
-
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+require("dotenv").config();
 const app = express();
 const port = 3000;
+const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017";
+const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey";
 
 // MongoDB setup
-const uri = "mongodb://mongodb:27017"; // Local MongoDB URI
-const client = new MongoClient(uri);
-const db = client.db("quizdb"); // Database name
-const resultsCollection = db.collection("results"); // Collection name
+const client = new MongoClient(MONGO_URI);
+const db = client.db("quizdb");
+const resultsCollection = db.collection("results");
+const usersCollection = db.collection("users");
 
-// Connect to MongoDB
+// Connect to MongoDB with retry logic
 async function connectDB() {
-	try {
-		await client.connect();
-		console.log("Connected to MongoDB");
-	} catch (err) {
-		console.error("Failed to connect to MongoDB:", err);
-		process.exit(1); // Exit if connection fails
+	let retries = 5;
+	while (retries > 0) {
+		try {
+			await client.connect();
+			console.log("Connected to MongoDB");
+			return;
+		} catch (err) {
+			console.error(`Failed to connect to MongoDB (retries left: ${retries - 1}):`, err.message);
+			retries--;
+			if (retries === 0) {
+				console.error("Max retries reached. Continuing without MongoDB...");
+				return; // Continue without MongoDB instead of exiting
+			}
+			// Wait 5 seconds before retrying
+			await new Promise(resolve => setTimeout(resolve, 5000));
+		}
 	}
 }
 connectDB();
 
+// Middleware to verify JWT
+const authenticateToken = (req, res, next) => {
+	const token = req.headers["authorization"]?.split(" ")[1]; // Expect "Bearer <token>"
+	if (!token) return res.status(401).json({ error: "Access denied" });
+
+	jwt.verify(token, JWT_SECRET, (err, user) => {
+		if (err) return res.status(403).json({ error: "Invalid token" });
+		req.user = user; // Attach user info to request
+		next();
+	});
+};
+
 app.use(cors());
-app.use(bodyParser.json());	
+app.use(bodyParser.json());
+
+app.post("/api/auth/register", async (req, res) => {
+	const { email, password } = req.body;
+	if (!email || !password) return res.status(400).json({ error: "Email and password required" });
+
+	try {
+		// Check if MongoDB is connected
+		if (!client.topology || !client.topology.isConnected()) {
+			return res.status(500).json({ error: "Database connection unavailable. Please try again later." });
+		}
+
+		const existingUser = await usersCollection.findOne({ email });
+		if (existingUser) return res.status(400).json({ error: "User already exists" });
+
+		const hashedPassword = await bcrypt.hash(password, 10);
+		await usersCollection.insertOne({ email, password: hashedPassword });
+
+		res.status(201).json({ message: "User created successfully" });
+	} catch (err) {
+		console.error("Signup error:", err);
+		res.status(500).json({ error: "Server error" });
+	}
+});
+
+app.post("/api/auth/login", async (req, res) => {
+	const { email, password } = req.body;
+	if (!email || !password) return res.status(400).json({ error: "Email and password required" });
+
+	try {
+		const user = await usersCollection.findOne({ email });
+		if (!user || !(await bcrypt.compare(password, user.password))) {
+			return res.status(401).json({ error: "Invalid credentials" });
+		}
+
+		const token = jwt.sign({ email: user.email }, JWT_SECRET, { expiresIn: "1h" });
+		res.json({ token, email: user.email });
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ error: "Server error" });
+	}
+});
 
 // Helper function to get all results from MongoDB
 async function getAllResults() {
 	return await resultsCollection.find({}).toArray();
 }
 
-// New GET endpoint to retrieve all results
+// GET results (public for now; add auth if needed)
 app.get("/api/results", async (req, res) => {
 	try {
+		// Check if MongoDB is connected
+		if (!client.topology || !client.topology.isConnected()) {
+			return res.json([]); // Return empty array if MongoDB not connected
+		}
 		const allResults = await getAllResults();
 		res.json(allResults);
 	} catch (err) {
@@ -43,39 +113,14 @@ app.get("/api/results", async (req, res) => {
 	}
 });
 
-app.post("/api/submit-result-with-email", async (req, res) => {
-	const { answers, email } = req.body;
-	console.log("Received answers:", answers, "for email:", email);
+// Submit result with email (now protected)
+app.post("/api/submit-result-with-email", authenticateToken, async (req, res) => {
+	const { quizId, dominantTrait, personality } = req.body;
+	const email = req.user.email; // From JWT
+	console.log("Received answers for:", email);
 
-	const personality = {};
-
-	answers.forEach((answer, index) => {
-		const question = quizData[index];
-		const choice = Object.keys(question.choices).find((key) => question.choices[key] === answer);
-		if (choice && question.weights[choice]) {
-			const weights = question.weights[choice];
-			for (const trait in weights) {
-				if (personality.hasOwnProperty(trait)) {
-					personality[trait] += weights[trait];
-				} else {
-					personality[trait] = weights[trait];
-				}
-			}
-		}
-	});
-
-	let dominantTrait = "";
-	let maxScore = 0;
-	for (const trait in personality) {
-		if (personality[trait] > maxScore) {
-			maxScore = personality[trait];
-			dominantTrait = trait;
-		}
-	}
-
-	// Store the result in MongoDB
 	try {
-		const result = { email, dominantTrait, personality, timestamp: new Date() };
+		const result = { email, quizId, dominantTrait, personality, timestamp: new Date() };
 		await resultsCollection.insertOne(result);
 		res.json({ dominantTrait, personality });
 	} catch (err) {
@@ -83,38 +128,107 @@ app.post("/api/submit-result-with-email", async (req, res) => {
 	}
 });
 
-// Existing endpoint (unchanged, as it doesn't store data)
-app.post("/api/quiz-results", (req, res) => {
-	const { answers } = req.body;
-	console.log("Received answers:", answers);
-
-	const personality = {};
-
-	answers.forEach((answer, index) => {
-		const question = quizData[index];
-		const choice = Object.keys(question.choices).find((key) => question.choices[key] === answer);
-		if (choice && question.weights[choice]) {
-			const weights = question.weights[choice];
-			for (const trait in weights) {
-				if (personality.hasOwnProperty(trait)) {
-					personality[trait] += weights[trait];
-				} else {
-					personality[trait] = weights[trait];
-				}
-			}
-		}
-	});
-
-	let dominantTrait = "";
-	let maxScore = 0;
-	for (const trait in personality) {
-		if (personality[trait] > maxScore) {
-			maxScore = personality[trait];
-			dominantTrait = trait;
-		}
+// Admin middleware - check if user is admin (for demo, using email check)
+const isAdmin = (req, res, next) => {
+	const email = req.user?.email;
+	if (!email || !email.includes('admin')) {
+		return res.status(403).json({ error: "Admin access required" });
 	}
+	next();
+};
 
-	res.json({ dominantTrait });
+// Admin analytics endpoints
+app.get("/api/admin/analytics", authenticateToken, isAdmin, async (req, res) => {
+	try {
+		const totalUsers = await usersCollection.countDocuments();
+		const totalResults = await resultsCollection.countDocuments();
+		
+		// Get personality distribution
+		const personalityStats = await resultsCollection.aggregate([
+			{ $group: { _id: "$dominantTrait", count: { $sum: 1 } } },
+			{ $sort: { count: -1 } }
+		]).toArray();
+		
+		// Get daily results for last 30 days
+		const thirtyDaysAgo = new Date();
+		thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+		
+		const dailyResults = await resultsCollection.aggregate([
+			{ $match: { timestamp: { $gte: thirtyDaysAgo } } },
+			{
+				$group: {
+					_id: { $dateToString: { format: "%Y-%m-%d", date: "$timestamp" } },
+					count: { $sum: 1 }
+				}
+			},
+			{ $sort: { _id: 1 } }
+		]).toArray();
+		
+		res.json({
+			totalUsers,
+			totalResults,
+			personalityStats,
+			dailyResults
+		});
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ error: "Failed to fetch analytics" });
+	}
+});
+
+// Get all users with their results
+app.get("/api/admin/users", authenticateToken, isAdmin, async (req, res) => {
+	try {
+		const users = await usersCollection.find({}).project({ password: 0 }).toArray();
+		const results = await resultsCollection.find({}).toArray();
+		
+		// Combine user data with their results
+		const usersWithResults = users.map(user => ({
+			...user,
+			results: results.filter(result => result.email === user.email),
+			totalQuizzes: results.filter(result => result.email === user.email).length
+		}));
+		
+		res.json(usersWithResults);
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ error: "Failed to fetch users" });
+	}
+});
+
+// Filter results by user, date range, or personality type
+app.get("/api/admin/results/filter", authenticateToken, isAdmin, async (req, res) => {
+	try {
+		const { email, startDate, endDate, personalityType } = req.query;
+		const filter = {};
+		
+		if (email) filter.email = email;
+		if (personalityType) filter.dominantTrait = personalityType;
+		if (startDate || endDate) {
+			filter.timestamp = {};
+			if (startDate) filter.timestamp.$gte = new Date(startDate);
+			if (endDate) filter.timestamp.$lte = new Date(endDate);
+		}
+		
+		const results = await resultsCollection.find(filter).toArray();
+		res.json(results);
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ error: "Failed to filter results" });
+	}
+});
+
+// Delete user and their results
+app.delete("/api/admin/users/:email", authenticateToken, isAdmin, async (req, res) => {
+	try {
+		const email = req.params.email;
+		await usersCollection.deleteOne({ email });
+		await resultsCollection.deleteMany({ email });
+		res.json({ message: "User and their results deleted successfully" });
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ error: "Failed to delete user" });
+	}
 });
 
 app.listen(port, () => {
