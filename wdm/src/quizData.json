@@ -115,6 +115,72 @@
             "optionA": {"shy": 1, "cautious": 1},
             "optionB": {"responsible": 1}
           }
+        },
+        {
+          "question": "At a social gathering, you usually...",
+          "choices": {
+            "optionA": "...arrive early and help the host prepare.",
+            "optionB": "...fashionably late when the party is in full swing."
+          },
+          "weights": {
+            "optionA": {"responsible": 1, "helper": 1},
+            "optionB": {"expressive": 1, "social": 1}
+          }
+        },
+        {
+          "question": "When someone shares good news, you...",
+          "choices": {
+            "optionA": "...listen quietly and smile.",
+            "optionB": "...get excited and celebrate with them."
+          },
+          "weights": {
+            "optionA": {"introvert": 1, "calm": 1},
+            "optionB": {"expressive": 1, "empathetic": 1}
+          }
+        },
+        {
+          "question": "You prefer movies that...",
+          "choices": {
+            "optionA": "...make you think deeply about complex themes.",
+            "optionB": "...are action-packed and keep you on the edge of your seat."
+          },
+          "weights": {
+            "optionA": {"analytical": 1, "introspective": 1},
+            "optionB": {"adventurous": 1, "stimulus_seeking": 1}
+          }
+        },
+        {
+          "question": "When planning your weekend, you...",
+          "choices": {
+            "optionA": "...create a schedule with activities.",
+            "optionB": "...see how you feel and decide spontaneously."
+          },
+          "weights": {
+            "optionA": {"planner": 1, "organized": 1},
+            "optionB": {"spontaneous": 1, "flexible": 1}
+          }
+        },
+        {
+          "question": "In a debate, you focus on...",
+          "choices": {
+            "optionA": "...facts and logical arguments.",
+            "optionB": "...emotional impact and personal stories."
+          },
+          "weights": {
+            "optionA": {"analytical": 1, "logical": 1},
+            "optionB": {"emotional": 1, "empathetic": 1}
+          }
+        },
+        {
+          "question": "You learn best when...",
+          "choices": {
+            "optionA": "...studying alone in a quiet environment.",
+            "optionB": "...discussing ideas with others."
+          },
+          "weights": {
+            "optionA": {"introvert": 1, "independent": 1},
+            "optionB": {"extrovert": 1, "social_learner": 1}
+          }
         }
       ]
     }
