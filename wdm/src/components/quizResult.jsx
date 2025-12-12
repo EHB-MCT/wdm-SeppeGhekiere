@@ -9,39 +9,85 @@ function QuizResult({ userAnswers }) {
 	const handleSubmitEmail = async () => {
 		setLoading(true);
 		try {
+			const token = localStorage.getItem("authToken");
+			if (!token) {
+				alert("Please log in to submit your quiz results");
+				return;
+			}
+
 			const response = await fetch("/api/submit-result-with-email", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
+					"Authorization": `Bearer ${token}`,
 				},
 				body: JSON.stringify({ answers: userAnswers, email }),
 			});
+
+			if (response.status === 401) {
+				alert("Your session has expired. Please log in again.");
+				return;
+			}
+
 			const data = await response.json();
 			setDominantTrait(data.dominantTrait);
 			setEmailSubmitted(true);
 		} catch (error) {
 			console.error("Error submitting email and results:", error);
+			alert("Failed to submit results. Please try again.");
 		} finally {
 			setLoading(false);
 		}
 	};
 
 	return (
-		<div>
-			<h2>Quiz Result</h2>
+		<div className="result-card">
 			{!emailSubmitted ? (
-				<div>
-					<h3>Enter your email to see your personality trait:</h3>
-					<input type="email" placeholder="Your email" value={email} suggestion="email" onChange={(e) => setEmail(e.target.value)} style={{ padding: "0.5rem", margin: "1rem 0", width: "80%", maxWidth: "300px" }} />
-					<button className="btn" onClick={handleSubmitEmail} disabled={loading || !email}>
-						{loading ? "Submitting..." : "Show My Result"}
-					</button>
-				</div>
+				<>
+					<h2>🎯 Quiz Complete!</h2>
+					<p style={{ fontSize: '1.125rem', marginBottom: '2rem' }}>
+						You've answered all questions. Enter your email to discover your personality type!
+					</p>
+					<div style={{ maxWidth: '400px', margin: '0 auto' }}>
+						<div className="form-group">
+							<label className="form-label" htmlFor="result-email">Email Address</label>
+							<input
+								id="result-email"
+								type="email"
+								className="form-input"
+								placeholder="Enter your email to see results"
+								value={email}
+								onChange={(e) => setEmail(e.target.value)}
+								disabled={loading}
+							/>
+						</div>
+						<button
+							className="btn btn-primary"
+							onClick={handleSubmitEmail}
+							disabled={loading || !email}
+							style={{ width: '100%' }}
+						>
+							{loading ? "🔄 Analyzing..." : "🎭 Reveal My Personality"}
+						</button>
+					</div>
+				</>
 			) : dominantTrait ? (
-				<div>
-					<h3>Your dominant personality trait is:</h3>
-					<h2 className="dominant-trait">{dominantTrait}</h2>
-				</div>
+				<>
+					<h2>✨ Your Personality Type</h2>
+					<div className="dominant-trait">{dominantTrait}</div>
+					<p className="trait-description">
+						Based on your answers, this is your dominant personality trait.
+						Each trait represents different ways of thinking and approaching life.
+					</p>
+					<div style={{ marginTop: '2rem' }}>
+						<button
+							className="btn btn-secondary"
+							onClick={() => window.location.reload()}
+						>
+							🔄 Take Quiz Again
+						</button>
+					</div>
+				</>
 			) : (
 				<div className="loader"></div>
 			)}
