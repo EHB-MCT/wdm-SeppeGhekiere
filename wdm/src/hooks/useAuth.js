@@ -5,15 +5,21 @@ export const useAuth = () => {
 	const [user, setUser] = useState(null);
 	const [loading, setLoading] = useState(true);
 
-		useEffect(() => {
-		const token = localStorage.getItem("authToken");
-		if (token) {
-			// Optionally verify token with backend
-			setIsAuthenticated(true);
-			setUser({ 
-				email: localStorage.getItem("userEmail"),
-				token: token
-			});
+	useEffect(() => {
+		const token = localStorage.getItem('token');
+		const userData = localStorage.getItem('user');
+		
+		if (token && userData) {
+			try {
+				const parsedUser = JSON.parse(userData);
+				const userWithToken = { ...parsedUser, token };
+				setUser(userWithToken);
+				setIsAuthenticated(true);
+			} catch (error) {
+				console.error('Error parsing user data:', error);
+				localStorage.removeItem('token');
+				localStorage.removeItem('user');
+			}
 		}
 		setLoading(false);
 	}, []);
@@ -25,12 +31,21 @@ export const useAuth = () => {
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ email, password }),
 			});
-			const data = await response.json();
-			if (response.ok) {
-				return { success: true };
-			} else {
-				return { success: false, error: data.error };
-			}
+
+		if (!response.ok) {
+			const errorData = await response.json();
+			throw new Error(errorData.error || 'Login failed');
+		}
+
+		const data = await response.json();
+		
+		const userWithToken = { ...data.user, token: data.token };
+		setUser(userWithToken);
+		setIsAuthenticated(true);
+		localStorage.setItem('token', data.token);
+		localStorage.setItem('user', JSON.stringify(userWithToken));
+			
+			return { success: true };
 		} catch (error) {
 			return { success: false, error: "Network error" };
 		}
@@ -43,19 +58,21 @@ export const useAuth = () => {
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ email, password }),
 			});
-			const data = await response.json();
-			if (response.ok) {
-				localStorage.setItem("authToken", data.token);
-				localStorage.setItem("userEmail", email);
-				setIsAuthenticated(true);
-				setUser({ 
-					email,
-					token: data.token
-				});
-				return { success: true };
-			} else {
-				return { success: false, error: data.error };
-			}
+
+		if (!response.ok) {
+			const errorData = await response.json();
+			throw new Error(errorData.error || 'Signup failed');
+		}
+
+		const data = await response.json();
+		
+		const userWithToken = { ...data.user, token: data.token };
+		setUser(userWithToken);
+		setIsAuthenticated(true);
+		localStorage.setItem('token', data.token);
+		localStorage.setItem('user', JSON.stringify(userWithToken));
+			
+			return { success: true };
 		} catch (error) {
 			return { success: false, error: "Network error" };
 		}

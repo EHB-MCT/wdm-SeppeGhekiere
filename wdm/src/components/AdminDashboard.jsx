@@ -16,29 +16,49 @@ const AdminDashboard = ({ token }) => {
 	const COLORS = ["#6366f1", "#06b6d4", "#ec4899", "#10b981", "#f59e0b"];
 
 	useEffect(() => {
-		fetchAnalytics();
-		fetchUsers();
+		const loadAllData = async () => {
+			await Promise.all([
+				fetchAnalytics(),
+				fetchUsers(),
+				fetchDatabaseData()
+			]);
+			setLoading(false);
+		};
+		
+		loadAllData();
 	}, []);
 
 	const fetchAnalytics = async () => {
 		try {
-			const response = await fetch("/api/admin/analytics", {
+			const apiUrl = `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api/admin/analytics`;
+			console.log("Fetching analytics from:", apiUrl);
+			console.log("Token:", token ? "present" : "missing");
+			
+			const response = await fetch(apiUrl, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
+			console.log("Response status:", response.status);
+			
 			if (response.ok) {
 				const data = await response.json();
 				setAnalytics(data);
 			} else if (response.status === 401) {
 				alert("Admin access required or session expired");
+			} else if (response.status === 403) {
+				const errorData = await response.json();
+				console.error("Admin access denied:", errorData);
+				alert("Admin access denied: " + (errorData.error || "Unknown error"));
 			}
 		} catch (error) {
 			console.error("Failed to fetch analytics:", error);
+		} finally {
+			setLoading(false);
 		}
 	};
 
 	const fetchUsers = async () => {
 		try {
-			const response = await fetch("/api/admin/users", {
+			const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api/admin/users`, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			if (response.ok) {
@@ -49,6 +69,23 @@ const AdminDashboard = ({ token }) => {
 			}
 		} catch (error) {
 			console.error("Failed to fetch users:", error);
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	const fetchDatabaseData = async () => {
+		try {
+			const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api/admin/database`, {
+				headers: { Authorization: `Bearer ${token}` },
+			});
+			if (response.ok) {
+				const data = await response.json();
+				console.log('Database Data:', data);
+				setDatabaseData(data);
+			}
+		} catch (error) {
+			console.error("Error fetching database data:", error);
 		} finally {
 			setLoading(false);
 		}

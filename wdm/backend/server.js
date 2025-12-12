@@ -10,6 +10,8 @@ const app = express();
 const port = 3000;
 const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017";
 const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey";
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "admin@example.com";
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin123";
 
 // MongoDB setup
 const client = new MongoClient(MONGO_URI);
@@ -82,13 +84,20 @@ app.post("/api/login", async (req, res) => {
 	if (!email || !password) return res.status(400).json({ error: "Email and password required" });
 
 	try {
+		// Check if it's admin login
+		if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+			const token = jwt.sign({ email }, JWT_SECRET, { expiresIn: "1h" });
+			return res.json({ token, user: { email, isAdmin: true } });
+		}
+
+		// Regular user login
 		const user = await usersCollection.findOne({ email });
 		if (!user || !(await bcrypt.compare(password, user.password))) {
 			return res.status(401).json({ error: "Invalid credentials" });
 		}
 
 		const token = jwt.sign({ email: user.email }, JWT_SECRET, { expiresIn: "1h" });
-		res.json({ token, email: user.email });
+		res.json({ token, user: { email: user.email, isAdmin: false } });
 	} catch (err) {
 		console.error(err);
 		res.status(500).json({ error: "Server error" });
@@ -155,12 +164,15 @@ app.post("/api/submit-result-with-email", authenticateToken, async (req, res) =>
 	}
 });
 
-// Admin middleware - check if user is admin (for demo, using email check)
+// Admin middleware - check if user is admin using environment variables
 const isAdmin = (req, res, next) => {
 	const email = req.user?.email;
-	if (!email || !email.includes('admin')) {
+	console.log("Admin check - Email:", email, "Expected:", ADMIN_EMAIL);
+	if (email !== ADMIN_EMAIL) {
+		console.log("Admin access denied for:", email);
 		return res.status(403).json({ error: "Admin access required" });
 	}
+	console.log("Admin access granted for:", email);
 	next();
 };
 
