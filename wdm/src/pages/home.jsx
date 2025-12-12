@@ -1,10 +1,25 @@
 import { useEffect, useState } from "react";
-import quizData from "../quizData.json";
+import quizData1 from "../quizData.json";
+import quizData2 from "../quizData2.json";
+import quizData3 from "../quizData3.json";
+import quizData4 from "../quizData4.json";
+
 function Home({ navigateTo }) {
-	const [quizzes, setQuizzes] = useState([]);
+	const [allQuizzes, setAllQuizzes] = useState([]);
+	const [featuredQuizzes, setFeaturedQuizzes] = useState([]);
 
 	useEffect(() => {
-		setQuizzes(quizData.quizzes);
+		const combinedQuizzes = [
+			...quizData1.quizzes,
+			...quizData2.quizzes,
+			...quizData3.quizzes,
+			...quizData4.quizzes
+		];
+		setAllQuizzes(combinedQuizzes);
+		
+		// Get 4 random quizzes
+		const shuffled = [...combinedQuizzes].sort(() => 0.5 - Math.random());
+		setFeaturedQuizzes(shuffled.slice(0, 4));
 	}, []);
 
 	return (
@@ -31,68 +46,32 @@ function Home({ navigateTo }) {
 					Answer thought-provoking questions and uncover insights about your unique personality traits.
 				</p>
 
-				<div style={{
-					display: 'grid',
-					gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-					gap: '2rem',
-					marginBottom: '3rem'
-				}}>
-					<div style={{
-						padding: '1.5rem',
-						background: 'var(--bg-glass)',
-						borderRadius: 'var(--border-radius)',
-						border: '1px solid var(--border-color)',
-						textAlign: 'center'
-					}}>
-						<div style={{ fontSize: '2rem', marginBottom: '1rem' }}>🎯</div>
-						<h3 style={{ marginBottom: '0.5rem' }}>Accurate Assessment</h3>
-						<p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
-							Based on proven psychological frameworks
-						</p>
-					</div>
-
-					<div style={{
-						padding: '1.5rem',
-						background: 'var(--bg-glass)',
-						borderRadius: 'var(--border-radius)',
-						border: '1px solid var(--border-color)',
-						textAlign: 'center'
-					}}>
-						<div style={{ fontSize: '2rem', marginBottom: '1rem' }}>⚡</div>
-						<h3 style={{ marginBottom: '0.5rem' }}>Quick & Easy</h3>
-						<p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
-							Complete in just a few minutes
-						</p>
-					</div>
-
-					<div style={{
-						padding: '1.5rem',
-						background: 'var(--bg-glass)',
-						borderRadius: 'var(--border-radius)',
-						border: '1px solid var(--border-color)',
-						textAlign: 'center'
-					}}>
-						<div style={{ fontSize: '2rem', marginBottom: '1rem' }}>🔒</div>
-						<h3 style={{ marginBottom: '0.5rem' }}>Private & Secure</h3>
-						<p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
-							Your responses are kept confidential
-						</p>
-					</div>
+				<div className="quiz-grid">
+					{featuredQuizzes.map((quiz) => (
+						<div key={quiz.id} className="quiz-card" onClick={() => navigateTo(`quiz/${quiz.id}`)}>
+							<span className="quiz-emoji">{getQuizEmoji(quiz.id)}</span>
+							<h3 className="quiz-title">{quiz.title}</h3>
+							<p className="quiz-meta">{quiz.questions.length} questions</p>
+							<span className="quiz-start-btn">Start Quiz</span>
+						</div>
+					))}
 				</div>
 
-				<div style={{ marginBottom: '2rem' }}>
+				<div style={{ textAlign: 'center', marginTop: '2rem' }}>
 					<button
-						className="btn btn-primary"
-						onClick={() => navigateTo('quiz')}
+						className="btn btn-secondary"
+						onClick={() => navigateTo('all-quizzes')}
 						style={{
-							fontSize: '1.125rem',
-							padding: '1rem 2rem',
-							minHeight: '56px'
+							fontSize: '1rem',
+							padding: '0.75rem 1.5rem',
+							minHeight: '48px'
 						}}
 					>
-						🚀 Start Your Personality Journey
+						📋 View All {allQuizzes.length} Quizzes
 					</button>
 				</div>
+
+
 
 				<p style={{
 					color: 'var(--text-muted)',
@@ -115,4 +94,24 @@ function Home({ navigateTo }) {
 		</div>
 	);
 }
+
+// Helper function to get emoji for each quiz type
+function getQuizEmoji(quizId) {
+	const emojiMap = {
+		'personality-test': '🧠',
+		'social-media-savvy': '📱',
+		'introvert-extrovert': '👥',
+		'learning-style': '📚',
+		'communication-style': '💬',
+		'work-style': '💼',
+		'stress-management': '🧘',
+		'decision-making': '⚖️',
+		'creativity-style': '🎨',
+		'leadership-style': '👑',
+		'time-management': '⏰',
+		'conflict-resolution': '🤝'
+	};
+	return emojiMap[quizId] || '📋';
+}
+
 export default Home;
