@@ -24,17 +24,6 @@ function App() {
 	}
 
 	const renderPage = () => {
-		if (page.startsWith("quiz/")) {
-			return isAuthenticated ? <Quiz page={page} /> : (
-				<div className="page-container">
-					<h2>Access Required</h2>
-					<p>Please sign in to take the personality quiz.</p>
-					<button className="btn btn-primary" onClick={() => navigateTo("login")}>
-						Sign In
-					</button>
-				</div>
-			);
-		}
 		switch (page) {
 			case "home":
 				return <Home navigateTo={navigateTo} />;
@@ -52,6 +41,16 @@ function App() {
 						<div className="form-card">
 							<SignUp onSignup={signup} />
 						</div>
+					</div>
+				);
+			case "quiz":
+				return isAuthenticated ? <Quiz /> : (
+					<div className="page-container">
+						<h2>Access Required</h2>
+						<p>Please sign in to take the personality quiz.</p>
+						<button className="btn btn-primary" onClick={() => navigateTo("login")}>
+							Sign In
+						</button>
 					</div>
 				);
 			case "admin":
@@ -89,8 +88,8 @@ function App() {
 							<>
 								<a
 									href="#"
-									className={`nav-link ${page.startsWith("quiz/") ? "active" : ""}`}
-									onClick={(e) => { e.preventDefault(); navigateTo("quiz/personality-test"); }}
+									className={`nav-link ${page === "quiz" ? "active" : ""}`}
+									onClick={(e) => { e.preventDefault(); navigateTo("quiz"); }}
 								>
 									Quiz
 								</a>
@@ -125,7 +124,7 @@ function App() {
 									onClick={(e) => { e.preventDefault(); navigateTo("signup"); }}
 								>
 									Sign Up
-								</a>
+									</a>
 							</>
 						)}
 					</div>

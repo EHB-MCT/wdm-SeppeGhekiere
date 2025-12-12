@@ -1,55 +1,48 @@
 import { useState } from "react";
 
-function LogIn({ onLogin }) {
+const LogIn = ({ onLogin }) => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-	const [error, setError] = useState(null);
+	const [error, setError] = useState("");
+	const [loading, setLoading] = useState(false);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		setError(null);
-		try {
-			await onLogin(email, password);
-		} catch (err) {
-			setError(err.message);
+		setLoading(true);
+		setError("");
+
+		const result = await onLogin(email, password);
+		if (!result.success) {
+			setError(result.error);
+		} else {
+			setError("");
 		}
+		setLoading(false);
 	};
 
 	return (
-		<form onSubmit={handleSubmit}>
-			<h2>Welcome Back!</h2>
-			{error && <p style={{ color: "red" }}>{error}</p>}
-			<div className="form-group">
-				<label className="form-label" htmlFor="email">
-					Email Address
-				</label>
-				<input
-					id="email"
-					type="email"
-					className="form-input"
-					value={email}
-					onChange={(e) => setEmail(e.target.value)}
-					required
-				/>
-			</div>
-			<div className="form-group">
-				<label className="form-label" htmlFor="password">
-					Password
-				</label>
-				<input
-					id="password"
-					type="password"
-					className="form-input"
-					value={password}
-					onChange={(e) => setPassword(e.target.value)}
-					required
-				/>
-			</div>
-			<button type="submit" className="btn btn-primary">
-				Log In
-			</button>
-		</form>
+		<>
+			<h2 className="form-title">Welcome Back</h2>
+			<form onSubmit={handleSubmit}>
+				<div className="form-group">
+					<label className="form-label" htmlFor="email">
+						Email Address
+					</label>
+					<input id="email" type="email" className="form-input" placeholder="Enter your email" value={email} onChange={(e) => setEmail(e.target.value)} required disabled={loading} />
+				</div>
+				<div className="form-group">
+					<label className="form-label" htmlFor="password">
+						Password
+					</label>
+					<input id="password" type="password" className="form-input" placeholder="Enter your password" value={password} onChange={(e) => setPassword(e.target.value)} required disabled={loading} />
+				</div>
+				<button type="submit" className="btn btn-primary" disabled={loading}>
+					{loading ? "Logging In..." : "Log In"}
+				</button>
+				{error && <div className="form-error">{error}</div>}
+			</form>
+		</>
 	);
-}
+};
 
 export default LogIn;

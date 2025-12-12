@@ -1,98 +1,72 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 export const useAuth = () => {
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const [user, setUser] = useState(null);
 	const [loading, setLoading] = useState(true);
 
-	useEffect(() => {
-		const token = localStorage.getItem('token');
-		const userData = localStorage.getItem('user');
-		
-		if (token && userData) {
-			try {
-				const parsedUser = JSON.parse(userData);
-				setUser(parsedUser);
-				setIsAuthenticated(true);
-			} catch (error) {
-				console.error('Error parsing user data:', error);
-				localStorage.removeItem('token');
-				localStorage.removeItem('user');
-			}
+		useEffect(() => {
+		const token = localStorage.getItem("authToken");
+		if (token) {
+			// Optionally verify token with backend
+			setIsAuthenticated(true);
+			setUser({ 
+				email: localStorage.getItem("userEmail"),
+				token: token
+			});
 		}
-		
 		setLoading(false);
 	}, []);
 
-	const login = async (email, password) => {
+	const signup = async (email, password) => {
 		try {
-			const response = await fetch('/api/auth/login', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
+			const response = await fetch(`${import.meta.env.VITE_API_URL}/api/signup`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ email, password }),
 			});
-
-			if (!response.ok) {
-				throw new Error('Login failed');
-			}
-
 			const data = await response.json();
-			
-			setUser(data.user);
-			setIsAuthenticated(true);
-			localStorage.setItem('token', data.token);
-			localStorage.setItem('user', JSON.stringify(data.user));
-			
-			return { success: true };
+			if (response.ok) {
+				return { success: true };
+			} else {
+				return { success: false, error: data.error };
+			}
 		} catch (error) {
-			console.error('Login error:', error);
-			return { success: false, error: error.message };
+			return { success: false, error: "Network error" };
 		}
 	};
 
-	const signup = async (email, password) => {
+	const login = async (email, password) => {
 		try {
-			const response = await fetch('/api/auth/register', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
+			const response = await fetch(`${import.meta.env.VITE_API_URL}/api/login`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ email, password }),
 			});
-
-			if (!response.ok) {
-				throw new Error('Signup failed');
-			}
-
 			const data = await response.json();
-			
-			setUser(data.user);
-			setIsAuthenticated(true);
-			localStorage.setItem('token', data.token);
-			localStorage.setItem('user', JSON.stringify(data.user));
-			
-			return { success: true };
+			if (response.ok) {
+				localStorage.setItem("authToken", data.token);
+				localStorage.setItem("userEmail", email);
+				setIsAuthenticated(true);
+				setUser({ 
+					email,
+					token: data.token
+				});
+				return { success: true };
+			} else {
+				return { success: false, error: data.error };
+			}
 		} catch (error) {
-			console.error('Signup error:', error);
-			return { success: false, error: error.message };
+			return { success: false, error: "Network error" };
 		}
 	};
 
 	const logout = () => {
-		setUser(null);
+		localStorage.removeItem("authToken");
+		localStorage.removeItem("userEmail");
 		setIsAuthenticated(false);
-		localStorage.removeItem('token');
-		localStorage.removeItem('user');
+		setUser(null);
 	};
 
-	return {
-		isAuthenticated,
-		user,
-		loading,
-		login,
-		signup,
-		logout
-	};
+	return { isAuthenticated, user, loading, signup, login, logout };
 };

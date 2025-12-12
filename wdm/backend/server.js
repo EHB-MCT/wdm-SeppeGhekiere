@@ -53,7 +53,7 @@ const authenticateToken = (req, res, next) => {
 app.use(cors());
 app.use(bodyParser.json());
 
-app.post("/api/auth/register", async (req, res) => {
+app.post("/api/signup", async (req, res) => {
 	const { email, password } = req.body;
 	if (!email || !password) return res.status(400).json({ error: "Email and password required" });
 
@@ -76,7 +76,7 @@ app.post("/api/auth/register", async (req, res) => {
 	}
 });
 
-app.post("/api/auth/login", async (req, res) => {
+app.post("/api/login", async (req, res) => {
 	const { email, password } = req.body;
 	if (!email || !password) return res.status(400).json({ error: "Email and password required" });
 
@@ -115,9 +115,35 @@ app.get("/api/results", async (req, res) => {
 
 // Submit result with email (now protected)
 app.post("/api/submit-result-with-email", authenticateToken, async (req, res) => {
-	const { quizId, dominantTrait, personality } = req.body;
+	const { answers } = req.body;
 	const email = req.user.email; // From JWT
 	console.log("Received answers for:", email);
+
+	// ... (rest of your quiz logic remains the same)
+	const personality = {};
+	answers.forEach((answer, index) => {
+		const question = quizData[index];
+		const choice = Object.keys(question.choices).find((key) => question.choices[key] === answer);
+		if (choice && question.weights[choice]) {
+			const weights = question.weights[choice];
+			for (const trait in weights) {
+				if (personality.hasOwnProperty(trait)) {
+					personality[trait] += weights[trait];
+				} else {
+					personality[trait] = weights[trait];
+				}
+			}
+		}
+	});
+
+	let dominantTrait = "";
+	let maxScore = 0;
+	for (const trait in personality) {
+		if (personality[trait] > maxScore) {
+			maxScore = personality[trait];
+			dominantTrait = trait;
+		}
+	}
 
 	try {
 		const result = { email, quizId, dominantTrait, personality, timestamp: new Date() };
@@ -230,6 +256,8 @@ app.delete("/api/admin/users/:email", authenticateToken, isAdmin, async (req, re
 		res.status(500).json({ error: "Failed to delete user" });
 	}
 });
+
+// ... (rest of your code, e.g., /api/quiz-results if needed)
 
 app.listen(port, () => {
 	console.log(`Backend server listening at http://localhost:${port}`);
