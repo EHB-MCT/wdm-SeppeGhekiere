@@ -1,0 +1,209 @@
+{
+  "quizzes": [
+    {
+      "id": "learning-style",
+      "title": "What's Your Learning Style?",
+      "questions": [
+        {
+          "question": "When learning something new, you prefer to...",
+          "choices": {
+            "optionA": "...read detailed instructions and take notes.",
+            "optionB": "...watch someone demonstrate it first."
+          },
+          "weights": {
+            "optionA": {"visual_learner": 1, "analytical": 1},
+            "optionB": {"kinesthetic_learner": 1, "observational": 1}
+          }
+        },
+        {
+          "question": "In a classroom setting, you learn best when...",
+          "choices": {
+            "optionA": "...the instructor lectures with slides and diagrams.",
+            "optionB": "...you can participate in hands-on activities."
+          },
+          "weights": {
+            "optionA": {"visual_learner": 1, "auditory_learner": 1},
+            "optionB": {"kinesthetic_learner": 1}
+          }
+        },
+        {
+          "question": "When trying to understand a complex concept, you...",
+          "choices": {
+            "optionA": "...draw diagrams or mind maps to visualize it.",
+            "optionB": "...discuss it with others to hear different perspectives."
+          },
+          "weights": {
+            "optionA": {"visual_learner": 1},
+            "optionB": {"auditory_learner": 1, "social_learner": 1}
+          }
+        },
+        {
+          "question": "You remember information better when...",
+          "choices": {
+            "optionA": "...you write it down multiple times.",
+            "optionB": "...you physically practice doing it."
+          },
+          "weights": {
+            "optionA": {"reading_writing": 1, "kinesthetic_learner": 1},
+            "optionB": {"kinesthetic_learner": 1, "hands_on": 1}
+          }
+        },
+        {
+          "question": "In a meeting, you prefer to...",
+          "choices": {
+            "optionA": "...have an agenda and follow it strictly.",
+            "optionB": "...allow organic discussion and tangents."
+          },
+          "weights": {
+            "optionA": {"structured": 1, "organized": 1},
+            "optionB": {"flexible": 1, "adaptive": 1}
+          }
+        },
+        {
+          "question": "When giving instructions to someone, you...",
+          "choices": {
+            "optionA": "...provide detailed written steps.",
+            "optionB": "...demonstrate while explaining verbally."
+          },
+          "weights": {
+            "optionA": {"visual_learner": 1, "detail_oriented": 1},
+            "optionB": {"kinesthetic_learner": 1, "auditory_learner": 1}
+          }
+        },
+        {
+          "question": "You solve problems by...",
+          "choices": {
+            "optionA": "...breaking them down into logical steps.",
+            "optionB": "...brainstorming multiple creative solutions."
+          },
+          "weights": {
+            "optionA": {"analytical": 1, "systematic": 1},
+            "optionB": {"creative": 1, "divergent_thinking": 1}
+          }
+        },
+        {
+          "question": "When receiving feedback, you prefer...",
+          "choices": {
+            "optionA": "...specific examples and data.",
+            "optionB": "...general encouragement and support."
+          },
+          "weights": {
+            "optionA": {"analytical": 1, "detail_oriented": 1},
+            "optionB": {"emotional": 1, "supportive": 1}
+          }
+        },
+        {
+          "question": "You feel most productive when...",
+          "choices": {
+            "optionA": "...working in short, focused bursts.",
+            "optionB": "...working for long, uninterrupted periods."
+          },
+          "weights": {
+            "optionA": {"time_boxed": 1, "focused": 1},
+            "optionB": {"deep_work": 1, "persistent": 1}
+          }
+        },
+        {
+          "question": "When learning a new skill, you...",
+          "choices": {
+            "optionA": "...watch tutorials first, then practice.",
+            "optionB": "...jump in and learn through trial and error."
+          },
+          "weights": {
+            "optionA": {"visual_learner": 1, "cautious": 1},
+            "optionB": {"kinesthetic_learner": 1, "adventurous": 1}
+          }
+        },
+        {
+          "question": "You organize your thoughts by...",
+          "choices": {
+            "optionA": "...making lists and outlines.",
+            "optionB": "...talking through ideas out loud."
+          },
+          "weights": {
+            "optionA": {"visual_learner": 1, "structured": 1},
+            "optionB": {"auditory_learner": 1, "verbal_processor": 1}
+          }
+        }
+      ]
+    },
+    {
+      "id": "communication-style",
+      "title": "How Do You Communicate?",
+      "questions": [
+        {
+          "question": "In a group discussion, you typically...",
+          "choices": {
+            "optionA": "...listen carefully before speaking.",
+            "optionB": "...jump in with your ideas right away."
+          },
+          "weights": {
+            "optionA": {"reflective": 1, "thoughtful": 1},
+            "optionB": {"expressive": 1, "assertive": 1}
+          }
+        },
+        {
+          "question": "When giving feedback to someone, you...",
+          "choices": {
+            "optionA": "...are direct and to the point.",
+            "optionB": "...are gentle and consider their feelings."
+          },
+          "weights": {
+            "optionA": {"direct": 1, "analytical": 1},
+            "optionB": {"empathetic": 1, "supportive": 1}
+          }
+        },
+        {
+          "question": "You prefer to resolve conflicts by...",
+          "choices": {
+            "optionA": "...finding a logical compromise.",
+            "optionB": "...making sure everyone feels heard."
+          },
+          "weights": {
+            "optionA": {"analytical": 1, "diplomatic": 1},
+            "optionB": {"empathetic": 1, "harmonious": 1}
+          }
+        }
+      ]
+    },
+    {
+      "id": "work-style",
+      "title": "What's Your Work Style?",
+      "questions": [
+        {
+          "question": "You work best when...",
+          "choices": {
+            "optionA": "...you have a quiet, private space to focus.",
+            "optionB": "...you're surrounded by the energy of a busy office."
+          },
+          "weights": {
+            "optionA": {"focused": 1, "independent": 1},
+            "optionB": {"collaborative": 1, "social": 1}
+          }
+        },
+        {
+          "question": "When approaching a new project, you...",
+          "choices": {
+            "optionA": "...create a detailed plan with milestones.",
+            "optionB": "...dive in and figure it out as you go."
+          },
+          "weights": {
+            "optionA": {"planner": 1, "methodical": 1},
+            "optionB": {"adaptive": 1, "intuitive": 1}
+          }
+        },
+        {
+          "question": "You prefer to receive feedback...",
+          "choices": {
+            "optionA": "...in writing so you can review it carefully.",
+            "optionB": "...in person so you can discuss it immediately."
+          },
+          "weights": {
+            "optionA": {"analytical": 1, "detail_oriented": 1},
+            "optionB": {"interactive": 1, "responsive": 1}
+          }
+        }
+      ]
+    }
+  ]
+}

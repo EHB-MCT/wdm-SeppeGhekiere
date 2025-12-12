@@ -1,0 +1,188 @@
+
+{
+  "quizzes": [
+    {
+      "id": "personality-test",
+      "title": "General Personality Test",
+      "questions": [
+        {
+          "question": "A stranger on the street asks you for money for a bus ticket. They seem distressed. What do you do?",
+          "choices": {
+            "optionA": "Give them the money without asking too many questions.",
+            "optionB": "Politely refuse, as you are skeptical of their story."
+          },
+          "weights": {
+            "optionA": {"naive": 1, "influenced": 1},
+            "optionB": {"skeptical": 1}
+          }
+        },
+        {
+          "question": "You see a social media post with a shocking headline from a source you've never heard of. What's your first reaction?",
+          "choices": {
+            "optionA": "Share it immediately; people need to know!",
+            "optionB": "Look for other sources to verify the information before sharing."
+          },
+          "weights": {
+            "optionA": {"naive": 1, "influenced": 1},
+            "optionB": {"skeptical": 1}
+          }
+        },
+        {
+          "question": "You're at a party where you don't know many people. What are you most likely to do?",
+          "choices": {
+            "optionA": "Find a quiet corner and observe the room.",
+            "optionB": "Introduce yourself to new people and strike up conversations."
+          },
+          "weights": {
+            "optionA": {"introvert": 1, "shy": 1},
+            "optionB": {"expressive": 1, "extrovert": 1}
+          }
+        }
+      ]
+    },
+    {
+      "id": "social-media-savvy",
+      "title": "Social Media Savvy",
+      "questions": [
+        {
+          "question": "When you have a strong opinion on a topic, you usually...",
+          "choices": {
+            "optionA": "...keep it to yourself unless asked directly.",
+            "optionB": "...enjoy expressing your viewpoint in a discussion."
+          },
+          "weights": {
+            "optionA": {"introvert": 1, "shy": 1},
+            "optionB": {"expressive": 1}
+          }
+        },
+        {
+          "question": "You're given a choice between a familiar favorite meal and a new, exotic dish you've never tried. You choose...",
+          "choices": {
+            "optionA": "The familiar favorite. You know you'll enjoy it.",
+            "optionB": "The new dish. You're curious to experience something different."
+          },
+          "weights": {
+            "optionA": {"cautious": 1},
+            "optionB": {"adventurous": 1}
+          }
+        },
+        {
+          "question": "When planning a vacation, you prefer to...",
+          "choices": {
+            "optionA": "...have a detailed itinerary with every day planned out.",
+            "optionB": "...have a general idea of where you're going but leave room for spontaneity."
+          },
+          "weights": {
+            "optionA": {"planner": 1},
+            "optionB": {"spontaneous": 1}
+          }
+        }
+      ]
+    },
+    {
+      "id": "introvert-extrovert",
+      "title": "Are You an Introvert or Extrovert?",
+      "questions": [
+        {
+          "question": "You're working on a group project. Your role is usually...",
+          "choices": {
+            "optionA": "...the leader, organizing the tasks and keeping everyone on track.",
+            "optionB": "...a contributor, focusing on your assigned tasks and supporting the leader."
+          },
+          "weights": {
+            "optionA": {"leader": 1},
+            "optionB": {"team_player": 1}
+          }
+        },
+        {
+          "question": "When faced with a difficult problem, you tend to...",
+          "choices": {
+            "optionA": "...break it down into smaller, manageable steps.",
+            "optionB": "...look at the big picture and brainstorm creative solutions."
+          },
+          "weights": {
+            "optionA": {"analytical": 1},
+            "optionB": {"creative": 1}
+          }
+        },
+        {
+          "question": "You've made a mistake at work. You...",
+          "choices": {
+            "optionA": "...try to fix it quietly before anyone notices.",
+            "optionB": "...own up to it immediately and ask for help if needed."
+          },
+          "weights": {
+            "optionA": {"shy": 1, "cautious": 1},
+            "optionB": {"responsible": 1}
+          }
+        },
+        {
+          "question": "At a social gathering, you usually...",
+          "choices": {
+            "optionA": "...arrive early and help the host prepare.",
+            "optionB": "...fashionably late when the party is in full swing."
+          },
+          "weights": {
+            "optionA": {"responsible": 1, "helper": 1},
+            "optionB": {"expressive": 1, "social": 1}
+          }
+        },
+        {
+          "question": "When someone shares good news, you...",
+          "choices": {
+            "optionA": "...listen quietly and smile.",
+            "optionB": "...get excited and celebrate with them."
+          },
+          "weights": {
+            "optionA": {"introvert": 1, "calm": 1},
+            "optionB": {"expressive": 1, "empathetic": 1}
+          }
+        },
+        {
+          "question": "You prefer movies that...",
+          "choices": {
+            "optionA": "...make you think deeply about complex themes.",
+            "optionB": "...are action-packed and keep you on the edge of your seat."
+          },
+          "weights": {
+            "optionA": {"analytical": 1, "introspective": 1},
+            "optionB": {"adventurous": 1, "stimulus_seeking": 1}
+          }
+        },
+        {
+          "question": "When planning your weekend, you...",
+          "choices": {
+            "optionA": "...create a schedule with activities.",
+            "optionB": "...see how you feel and decide spontaneously."
+          },
+          "weights": {
+            "optionA": {"planner": 1, "organized": 1},
+            "optionB": {"spontaneous": 1, "flexible": 1}
+          }
+        },
+        {
+          "question": "In a debate, you focus on...",
+          "choices": {
+            "optionA": "...facts and logical arguments.",
+            "optionB": "...emotional impact and personal stories."
+          },
+          "weights": {
+            "optionA": {"analytical": 1, "logical": 1},
+            "optionB": {"emotional": 1, "empathetic": 1}
+          }
+        },
+        {
+          "question": "You learn best when...",
+          "choices": {
+            "optionA": "...studying alone in a quiet environment.",
+            "optionB": "...discussing ideas with others."
+          },
+          "weights": {
+            "optionA": {"introvert": 1, "independent": 1},
+            "optionB": {"extrovert": 1, "social_learner": 1}
+          }
+        }
+      ]
+    }
+  ]
+}
