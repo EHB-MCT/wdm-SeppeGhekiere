@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, LineChart, Line, PieChart, Pie, Cell } from "recharts";
 
-const AdminDashboard = ({ token }) => {
+	const AdminDashboard = ({ token }) => {
 	const [analytics, setAnalytics] = useState(null);
 	const [users, setUsers] = useState([]);
 	const [filteredResults, setFilteredResults] = useState([]);
+	const [databaseData, setDatabaseData] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [filters, setFilters] = useState({
 		email: "",
@@ -18,11 +19,12 @@ const AdminDashboard = ({ token }) => {
 	useEffect(() => {
 		fetchAnalytics();
 		fetchUsers();
+		fetchDatabaseData();
 	}, []);
 
 	const fetchAnalytics = async () => {
 		try {
-			const response = await fetch("/api/admin/analytics", {
+			const response = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/analytics`, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			if (response.ok) {
@@ -38,19 +40,31 @@ const AdminDashboard = ({ token }) => {
 
 	const fetchUsers = async () => {
 		try {
-			const response = await fetch("/api/admin/users", {
+			const response = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/users`, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			if (response.ok) {
 				const data = await response.json();
 				setUsers(data);
-			} else if (response.status === 401) {
-				alert("Admin access required or session expired");
 			}
 		} catch (error) {
-			console.error("Failed to fetch users:", error);
-		} finally {
-			setLoading(false);
+			console.error("Error fetching users:", error);
+		}
+	};
+
+	const fetchDatabaseData = async () => {
+		try {
+			const response = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/database`, {
+				headers: { Authorization: `Bearer ${token}` },
+			});
+			if (response.ok) {
+				const data = await response.json();
+				console.log('Database Data:', data);
+				setDatabaseData(data);
+				return data;
+			}
+		} catch (error) {
+			console.error("Error fetching database data:", error);
 		}
 	};
 
@@ -422,6 +436,157 @@ const AdminDashboard = ({ token }) => {
 					</table>
 				</div>
 			</div>
+
+			{/* Database Data Section */}
+			{databaseData && (
+				<div className="page-container" style={{ marginTop: "2rem" }}>
+					<h3 style={{ color: "var(--text-primary)", marginBottom: "1.5rem" }}>🗄️ Database Overview</h3>
+					
+					<div style={{
+						display: "grid",
+						gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+						gap: "1rem",
+						marginBottom: "2rem"
+					}}>
+						<div style={{
+							background: "var(--bg-glass)",
+							padding: "1rem",
+							borderRadius: "var(--border-radius)",
+							border: "1px solid var(--border-color)",
+							textAlign: "center"
+						}}>
+							<div style={{ fontSize: "1.5rem", fontWeight: "bold", color: "var(--primary-color)" }}>
+								{databaseData.statistics.totalUsers}
+							</div>
+							<div style={{ color: "var(--text-secondary)", fontSize: "0.875rem" }}>
+								Total Users
+							</div>
+						</div>
+						<div style={{
+							background: "var(--bg-glass)",
+							padding: "1rem",
+							borderRadius: "var(--border-radius)",
+							border: "1px solid var(--border-color)",
+							textAlign: "center"
+						}}>
+							<div style={{ fontSize: "1.5rem", fontWeight: "bold", color: "var(--primary-color)" }}>
+								{databaseData.statistics.totalResults}
+							</div>
+							<div style={{ color: "var(--text-secondary)", fontSize: "0.875rem" }}>
+								Total Results
+							</div>
+						</div>
+						<div style={{
+							background: "var(--bg-glass)",
+							padding: "1rem",
+							borderRadius: "var(--border-radius)",
+							border: "1px solid var(--border-color)",
+							textAlign: "center"
+						}}>
+							<div style={{ fontSize: "1.5rem", fontWeight: "bold", color: "var(--primary-color)" }}>
+								{databaseData.statistics.averageResultsPerUser}
+							</div>
+							<div style={{ color: "var(--text-secondary)", fontSize: "0.875rem" }}>
+								Avg Results/User
+							</div>
+						</div>
+					</div>
+
+					<div style={{
+						display: "grid",
+						gridTemplateColumns: "1fr 1fr",
+						gap: "2rem"
+					}}>
+						{/* Users List */}
+						<div style={{
+							background: "var(--bg-glass)",
+							borderRadius: "var(--border-radius)",
+							border: "1px solid var(--border-color)",
+							overflow: "hidden"
+						}}>
+							<div style={{
+								background: "var(--bg-secondary)",
+								padding: "1rem",
+								borderBottom: "1px solid var(--border-color)"
+							}}>
+								<h4 style={{ margin: 0, color: "var(--text-primary)" }}>
+									👥 Users ({databaseData.users.total})
+								</h4>
+							</div>
+							<div style={{ maxHeight: "300px", overflow: "auto" }}>
+								{databaseData.users.data.map((user, index) => (
+									<div key={index} style={{
+										padding: "0.75rem 1rem",
+										borderBottom: "1px solid var(--border-color)",
+										display: "flex",
+										justifyContent: "space-between",
+										alignItems: "center"
+									}}>
+										<span style={{ color: "var(--text-primary)" }}>{user.email}</span>
+										<span style={{ 
+											background: "var(--accent-color)", 
+											color: "white", 
+											padding: "0.25rem 0.5rem", 
+											borderRadius: "4px", 
+											fontSize: "0.75rem" 
+										}}>
+											User
+										</span>
+									</div>
+								))}
+							</div>
+						</div>
+
+						{/* Recent Results */}
+						<div style={{
+							background: "var(--bg-glass)",
+							borderRadius: "var(--border-radius)",
+							border: "1px solid var(--border-color)",
+							overflow: "hidden"
+						}}>
+							<div style={{
+								background: "var(--bg-secondary)",
+								padding: "1rem",
+								borderBottom: "1px solid var(--border-color)"
+							}}>
+								<h4 style={{ margin: 0, color: "var(--text-primary)" }}>
+									📊 Recent Results ({databaseData.results.total})
+								</h4>
+							</div>
+							<div style={{ maxHeight: "300px", overflow: "auto" }}>
+								{databaseData.results.data.slice(0, 10).map((result, index) => (
+									<div key={index} style={{
+										padding: "0.75rem 1rem",
+										borderBottom: "1px solid var(--border-color)"
+									}}>
+										<div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+											<span style={{ color: "var(--text-primary)", fontWeight: "500" }}>
+												{result.email}
+											</span>
+											<span style={{ 
+												background: "var(--success-color)", 
+												color: "white", 
+												padding: "0.25rem 0.5rem", 
+												borderRadius: "4px", 
+												fontSize: "0.75rem" 
+											}}>
+												{result.quizId}
+											</span>
+										</div>
+										<div style={{ 
+											fontSize: "0.875rem", 
+											color: "var(--text-secondary)",
+											marginTop: "0.25rem" 
+										}}>
+											{result.dominantTrait} • {new Date(result.timestamp).toLocaleDateString()}
+										</div>
+									</div>
+								))}
+							</div>
+						</div>
+					</div>
+				</div>
+			)}
 		</div>
 	);
 };

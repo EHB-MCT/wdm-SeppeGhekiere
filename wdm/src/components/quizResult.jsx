@@ -38,7 +38,7 @@ function QuizResult({ userAnswers, quiz }) {
 		setLoading(true);
 		try {
 			const token = localStorage.getItem("token");
-			const response = await fetch("/api/submit-result-with-email", {
+			const response = await fetch(`${import.meta.env.VITE_API_URL}/api/submit-result-with-email`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

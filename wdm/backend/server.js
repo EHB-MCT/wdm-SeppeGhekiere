@@ -7,7 +7,7 @@ const bcrypt = require("bcryptjs");
 require("dotenv").config();
 const app = express();
 const port = 3000;
-const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017";
+const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/quizdb";
 const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey";
 
 // MongoDB setup
@@ -53,7 +53,7 @@ const authenticateToken = (req, res, next) => {
 app.use(cors());
 app.use(bodyParser.json());
 
-app.post("/api/signup", async (req, res) => {
+app.post("/api/auth/register", async (req, res) => {
 	const { email, password } = req.body;
 	if (!email || !password) return res.status(400).json({ error: "Email and password required" });
 
@@ -69,14 +69,16 @@ app.post("/api/signup", async (req, res) => {
 		const hashedPassword = await bcrypt.hash(password, 10);
 		await usersCollection.insertOne({ email, password: hashedPassword });
 
-		res.status(201).json({ message: "User created successfully" });
+		// Auto-login after successful registration
+		const token = jwt.sign({ email }, JWT_SECRET, { expiresIn: "1h" });
+		res.status(201).json({ token, user: { email } });
 	} catch (err) {
 		console.error("Signup error:", err);
 		res.status(500).json({ error: "Server error" });
 	}
 });
 
-app.post("/api/login", async (req, res) => {
+app.post("/api/auth/login", async (req, res) => {
 	const { email, password } = req.body;
 	if (!email || !password) return res.status(400).json({ error: "Email and password required" });
 
@@ -87,7 +89,7 @@ app.post("/api/login", async (req, res) => {
 		}
 
 		const token = jwt.sign({ email: user.email }, JWT_SECRET, { expiresIn: "1h" });
-		res.json({ token, email: user.email });
+		res.json({ token, user: { email: user.email } });
 	} catch (err) {
 		console.error(err);
 		res.status(500).json({ error: "Server error" });
@@ -119,37 +121,19 @@ app.post("/api/submit-result-with-email", authenticateToken, async (req, res) =>
 	const email = req.user.email; // From JWT
 	console.log("Received answers for:", email);
 
-	// ... (rest of your quiz logic remains the same)
-	const personality = {};
-	answers.forEach((answer, index) => {
-		const question = quizData[index];
-		const choice = Object.keys(question.choices).find((key) => question.choices[key] === answer);
-		if (choice && question.weights[choice]) {
-			const weights = question.weights[choice];
-			for (const trait in weights) {
-				if (personality.hasOwnProperty(trait)) {
-					personality[trait] += weights[trait];
-				} else {
-					personality[trait] = weights[trait];
-				}
-			}
-		}
-	});
-
-	let dominantTrait = "";
-	let maxScore = 0;
-	for (const trait in personality) {
-		if (personality[trait] > maxScore) {
-			maxScore = personality[trait];
-			dominantTrait = trait;
-		}
-	}
-
+	// For now, just save the answers without personality calculation
+	// TODO: Add quiz data and personality calculation logic
 	try {
-		const result = { email, quizId, dominantTrait, personality, timestamp: new Date() };
+		const result = { 
+			email, 
+			quizId: "default-quiz", 
+			answers, 
+			timestamp: new Date() 
+		};
 		await resultsCollection.insertOne(result);
-		res.json({ dominantTrait, personality });
+		res.json({ message: "Results saved successfully", answers });
 	} catch (err) {
+		console.error("Failed to save result:", err);
 		res.status(500).json({ error: "Failed to save result" });
 	}
 });
@@ -257,7 +241,72 @@ app.delete("/api/admin/users/:email", authenticateToken, isAdmin, async (req, re
 	}
 });
 
-// ... (rest of your code, e.g., /api/quiz-results if needed)
+// Get all database data (for debugging/admin purposes)
+app.get("/api/admin/database", authenticateToken, isAdmin, async (req, res) => {
+	try {
+		const users = await usersCollection.find({}).project({ password: 0 }).toArray();
+		const results = await resultsCollection.find({}).toArray();
+		
+		res.json({
+			users: {
+				total: users.length,
+				data: users
+			},
+			results: {
+				total: results.length,
+				data: results
+			},
+			statistics: {
+				totalUsers: users.length,
+				totalResults: results.length,
+				quizzesTaken: results.length,
+				averageResultsPerUser: users.length > 0 ? (results.length / users.length).toFixed(2) : 0
+			}
+		});
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ error: "Failed to fetch database data" });
+	}
+});
+
+// Get database statistics (simplified version)
+app.get("/api/admin/stats", authenticateToken, isAdmin, async (req, res) => {
+	try {
+		const totalUsers = await usersCollection.countDocuments();
+		const totalResults = await resultsCollection.countDocuments();
+		
+		// Get quiz distribution
+		const quizDistribution = await resultsCollection.aggregate([
+			{ $group: { _id: "$quizId", count: { $sum: 1 } } },
+			{ $sort: { count: -1 } }
+		]).toArray();
+		
+		// Get recent activity
+		const sevenDaysAgo = new Date();
+		sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+		
+		const recentResults = await resultsCollection.countDocuments({
+			timestamp: { $gte: sevenDaysAgo }
+		});
+		
+		res.json({
+			totalUsers,
+			totalResults,
+			quizDistribution,
+			recentActivity: {
+				last7Days: recentResults,
+				averagePerDay: (recentResults / 7).toFixed(1)
+			}
+		});
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ error: "Failed to fetch statistics" });
+	}
+});
+
+app.listen(port, () => {
+	console.log(`Backend server listening at http://localhost:${port}`);
+});
 
 app.listen(port, () => {
 	console.log(`Backend server listening at http://localhost:${port}`);
