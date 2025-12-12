@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import Home from "./pages/home.jsx";
 import Quiz from "./pages/quiz.jsx";
+import AllQuizzes from "./pages/allQuizzes.jsx";
 import LogIn from "./components/LogIn.jsx";
 import SignUp from "./components/SignUp.jsx";
 import AdminDashboard from "./components/AdminDashboard.jsx";
@@ -24,9 +25,14 @@ function App() {
 	}
 
 	const renderPage = () => {
+		if (page.startsWith("quiz/")) {
+			return <Quiz page={page} isAuthenticated={isAuthenticated} navigateTo={navigateTo} />;
+		}
 		switch (page) {
 			case "home":
 				return <Home navigateTo={navigateTo} />;
+			case "all-quizzes":
+				return <AllQuizzes navigateTo={navigateTo} />;
 			case "login":
 				return (
 					<div className="form-container">
@@ -47,7 +53,7 @@ function App() {
 				return isAuthenticated ? <Quiz /> : (
 					<div className="page-container">
 						<h2>Access Required</h2>
-						<p>Please sign in to take the personality quiz.</p>
+						<p>Please sign in to take personality quiz.</p>
 						<button className="btn btn-primary" onClick={() => navigateTo("login")}>
 							Sign In
 						</button>
@@ -82,6 +88,13 @@ function App() {
 							onClick={(e) => { e.preventDefault(); navigateTo("home"); }}
 						>
 							Home
+						</a>
+						<a
+							href="#"
+							className={`nav-link ${page === "all-quizzes" ? "active" : ""}`}
+							onClick={(e) => { e.preventDefault(); navigateTo("all-quizzes"); }}
+						>
+							All Quizzes
 						</a>
 
 						{isAuthenticated ? (
