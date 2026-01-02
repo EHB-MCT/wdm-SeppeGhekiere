@@ -63,7 +63,7 @@ const AdminDashboard = ({ token }) => {
 			});
 			if (response.ok) {
 				const data = await response.json();
-				console.log('Database Data:', data);
+				console.log("Database Data:", data);
 				setDatabaseData(data);
 				return data;
 			}
@@ -121,32 +121,11 @@ const AdminDashboard = ({ token }) => {
 				</div>
 			</div>
 		);
-}
+	}
 
-				{activeView === "overview" && (
-					<>
-				{/* Overview Cards */}
-				<div
-					style={{
-									background: activeView === view ? "var(--primary-color)" : "transparent",
-									color: activeView === view ? "white" : "var(--text-primary)",
-									border: "none",
-									padding: "0.75rem 1.5rem",
-									borderRadius: "8px",
-									cursor: "pointer",
-									fontWeight: "600",
-									transition: "all 0.2s ease"
-								}}
-                                                        >
-                                                                {view === "overview" ? "📊 Overview" :
-                                                                 view === "profiles" ? "👥 Profiles" :
-                                                                 "🔍 Comparison"}
-                                                        </button>
-						))}
-					</div>
-				</div>
-
-				{activeView === "overview" && (
+	return (
+		<div>
+			<div className="page-container">
 				<div style={{ marginBottom: "2rem" }}>
 					<h1
 						style={{
@@ -162,384 +141,471 @@ const AdminDashboard = ({ token }) => {
 					<p style={{ color: "var(--text-secondary)" }}>Monitor user activity, analyze trends, and manage your personality quiz platform</p>
 				</div>
 
-				{/* Overview Cards */}
-				<div
-					style={{
-						display: "grid",
-						gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-						gap: "1.5rem",
-						marginBottom: "3rem",
+				{/* Navigation Tabs */}
+				<div style={{ marginBottom: "2rem" }}>
+					<div style={{
+							display: "flex",
+							gap: "0.5rem",
+							background: "var(--bg-glass)",
+							padding: "0.5rem",
+							borderRadius: "var(--border-radius)",
+							border: "1px solid var(--border-color)"
 					}}
-				>
-					<div
-						style={{
-							background: "var(--bg-glass)",
-							padding: "1.5rem",
-							borderRadius: "var(--border-radius)",
-							border: "1px solid var(--border-color)",
-							textAlign: "center",
-						}}
 					>
-						<div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>👥</div>
-						<h3 style={{ margin: "0 0 0.5rem 0", color: "var(--text-primary)" }}>Total Users</h3>
-						<p
-							style={{
-								fontSize: "2rem",
-								fontWeight: "bold",
-								color: "var(--primary-color)",
-								margin: 0,
-							}}
-						>
-							{analytics?.totalUsers || 0}
-						</p>
-					</div>
-					<div
-						style={{
-							background: "var(--bg-glass)",
-							padding: "1.5rem",
-							borderRadius: "var(--border-radius)",
-							border: "1px solid var(--border-color)",
-							textAlign: "center",
-						}}
-					>
-						<div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>📝</div>
-						<h3 style={{ margin: "0 0 0.5rem 0", color: "var(--text-primary)" }}>Total Quiz Results</h3>
-						<p
-							style={{
-								fontSize: "2rem",
-								fontWeight: "bold",
-								color: "var(--success-color)",
-								margin: 0,
-							}}
-						>
-							{analytics?.totalResults || 0}
-						</p>
-					</div>
-					<div
-						style={{
-							background: "var(--bg-glass)",
-							padding: "1.5rem",
-							borderRadius: "var(--border-radius)",
-							border: "1px solid var(--border-color)",
-							textAlign: "center",
-						}}
-					>
-						<div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>📊</div>
-						<h3 style={{ margin: "0 0 0.5rem 0", color: "var(--text-primary)" }}>Avg Quizzes/User</h3>
-						<p
-							style={{
-								fontSize: "2rem",
-								fontWeight: "bold",
-								color: "var(--accent-color)",
-								margin: 0,
-							}}
-						>
-							{analytics?.totalUsers ? (analytics.totalResults / analytics.totalUsers).toFixed(1) : 0}
-						</p>
-					</div>
+						{["overview", "profiles", "comparison"].map(view => (
+							<button
+								key={view}
+								onClick={() => setActiveView(view)}
+								style={{
+									background: activeView === view ? "var(--primary-color)" : "transparent",
+									color: activeView === view ? "white" : "var(--text-primary)",
+									border: "none",
+									padding: "0.75rem 1.5rem",
+									borderRadius: "8px",
+									cursor: "pointer",
+									fontWeight: "600",
+									transition: "all 0.2s ease"
+								}}
+							>
+								{view === "overview" ? "📊 Overview" : view === "profiles" ? "👥 Profiles" : "🔍 Comparison"}
+							</button>
+					))}
+						</div>
 				</div>
 
-				{/* Charts */}
-				<div
-					style={{
-						display: "grid",
-						gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))",
-						gap: "2rem",
-						marginBottom: "3rem",
-					}}
-				>
-					<div
-						style={{
-							background: "var(--bg-glass)",
-							padding: "1.5rem",
-							borderRadius: "var(--border-radius)",
-							border: "1px solid var(--border-color)",
-						}}
-					>
-						<h3 style={{ marginTop: 0, color: "var(--text-primary)" }}>🧠 Personality Distribution</h3>
-						<PieChart width={400} height={300}>
-							<Pie data={analytics?.personalityStats || []} cx={200} cy={150} labelLine={false} label={({ _id, count }) => `${_id}: ${count}`} outerRadius={80} fill="#8884d8" dataKey="count">
-								{(analytics?.personalityStats || []).map((entry, index) => (
-									<Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-								))}
-							</Pie>
-							<Tooltip />
-						</PieChart>
-					</div>
-
-					<div
-						style={{
-							background: "var(--bg-glass)",
-							padding: "1.5rem",
-							borderRadius: "var(--border-radius)",
-							border: "1px solid var(--border-color)",
-						}}
-					>
-						<h3 style={{ marginTop: 0, color: "var(--text-primary)" }}>📈 Daily Activity (30 Days)</h3>
-						<LineChart width={400} height={300} data={analytics?.dailyResults || []}>
-							<CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
-							<XAxis dataKey="_id" stroke="var(--text-secondary)" />
-							<YAxis stroke="var(--text-secondary)" />
-							<Tooltip
-								contentStyle={{
-									background: "var(--bg-secondary)",
+				{activeView === "overview" && (
+					<>
+						{/* Overview Cards */}
+						<div
+							style={{
+								display: "grid",
+								gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+								gap: "1.5rem",
+								marginBottom: "3rem",
+							}}
+						>
+							<div
+								style={{
+									background: "var(--bg-glass)",
+									padding: "1.5rem",
+									borderRadius: "var(--border-radius)",
 									border: "1px solid var(--border-color)",
-									borderRadius: "8px",
+									textAlign: "center",
 								}}
-							/>
-							<Legend />
-							<Line type="monotone" dataKey="count" stroke="var(--primary-color)" strokeWidth={3} name="Quizzes Taken" dot={{ fill: "var(--primary-color)", strokeWidth: 2, r: 4 }} />
-						</LineChart>
-					</div>
-</div>
+							>
+								<div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>👥</div>
+								<h3 style={{ margin: "0 0 0.5rem 0", color: "var(--text-primary)" }}>Total Users</h3>
+								<p
+									style={{
+										fontSize: "2rem",
+										fontWeight: "bold",
+										color: "var(--primary-color)",
+										margin: 0,
+									}}
+								>
+									{analytics?.totalUsers || 0}
+								</p>
+							</div>
+							<div
+								style={{
+									background: "var(--bg-glass)",
+									padding: "1.5rem",
+									borderRadius: "var(--border-radius)",
+									border: "1px solid var(--border-color)",
+									textAlign: "center",
+								}}
+							>
+								<div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>📝</div>
+								<h3 style={{ margin: "0 0 0.5rem 0", color: "var(--text-primary)" }}>Total Quiz Results</h3>
+								<p
+									style={{
+										fontSize: "2rem",
+										fontWeight: "bold",
+										color: "var(--success-color)",
+										margin: 0,
+									}}
+								>
+									{analytics?.totalResults || 0}
+								</p>
+							</div>
+							<div
+								style={{
+									background: "var(--bg-glass)",
+									padding: "1.5rem",
+									borderRadius: "var(--border-radius)",
+									border: "1px solid var(--border-color)",
+									textAlign: "center",
+								}}
+							>
+								<div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>📊</div>
+								<h3 style={{ margin: "0 0 0.5rem 0", color: "var(--text-primary)" }}>Avg Quizzes/User</h3>
+								<p
+									style={{
+										fontSize: "2rem",
+										fontWeight: "bold",
+										color: "var(--accent-color)",
+										margin: 0,
+									}}
+								>
+									{analytics?.totalUsers ? (analytics.totalResults / analytics.totalUsers).toFixed(1) : 0}
+								</p>
+							</div>
+						</div>
+
+						{/* Charts */}
+						<div
+							style={{
+								display: "grid",
+								gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))",
+								gap: "2rem",
+								marginBottom: "3rem",
+							}}
+						>
+							<div
+								style={{
+									background: "var(--bg-glass)",
+									padding: "1.5rem",
+									borderRadius: "var(--border-radius)",
+									border: "1px solid var(--border-color)",
+								}}
+							>
+								<h3 style={{ marginTop: 0, color: "var(--text-primary)" }}>🧠 Personality Distribution</h3>
+								<PieChart width={400} height={300}>
+									<Pie data={analytics?.personalityStats || []} cx={200} cy={150} labelLine={false} label={({ _id, count }) => `${_id}: ${count}`} outerRadius={80} fill="#8884d8" dataKey="count">
+										{(analytics?.personalityStats || []).map((entry, index) => (
+											<Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+										))}
+									</Pie>
+									<Tooltip />
+								</PieChart>
+							</div>
+
+							<div
+								style={{
+									background: "var(--bg-glass)",
+									padding: "1.5rem",
+									borderRadius: "var(--border-radius)",
+									border: "1px solid var(--border-color)",
+								}}
+							>
+								<h3 style={{ marginTop: 0, color: "var(--text-primary)" }}>📈 Daily Activity (30 Days)</h3>
+								<LineChart width={400} height={300} data={analytics?.dailyResults || []}>
+									<CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
+									<XAxis dataKey="_id" stroke="var(--text-secondary)" />
+									<YAxis stroke="var(--text-secondary)" />
+									<Tooltip
+										contentStyle={{
+											background: "var(--bg-secondary)",
+											border: "1px solid var(--border-color)",
+											borderRadius: "8px",
+										}}
+									/>
+									<Legend />
+									<Line type="monotone" dataKey="count" stroke="var(--primary-color)" strokeWidth={3} name="Quizzes Taken" dot={{ fill: "var(--primary-color)", strokeWidth: 2, r: 4 }} />
+								</LineChart>
+							</div>
+						</div>
+
+						{/* Filters */}
+						<div
+							style={{
+								background: "var(--bg-glass)",
+								padding: "2rem",
+								borderRadius: "var(--border-radius)",
+								border: "1px solid var(--border-color)",
+								marginBottom: "2rem",
+							}}
+						>
+							<h3 style={{ marginTop: 0, color: "var(--text-primary)" }}>🔍 Filter Results</h3>
+							<div
+								style={{
+									display: "grid",
+									gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+									gap: "1rem",
+									alignItems: "end",
+								}}
+							>
+								<div className="form-group">
+									<label className="form-label">User Email</label>
+									<input type="text" className="form-input" placeholder="Search by email" value={filters.email} onChange={(e) => setFilters({ ...filters, email: e.target.value })} />
+								</div>
+								<div className="form-group">
+									<label className="form-label">Start Date</label>
+									<input type="date" className="form-input" value={filters.startDate} onChange={(e) => setFilters({ ...filters, startDate: e.target.value })} />
+								</div>
+								<div className="form-group">
+									<label className="form-label">End Date</label>
+									<input type="date" className="form-input" value={filters.endDate} onChange={(e) => setFilters({ ...filters, endDate: e.target.value })} />
+								</div>
+								<div className="form-group">
+									<label className="form-label">Personality Type</label>
+									<select className="form-input" value={filters.personalityType} onChange={(e) => setFilters({ ...filters, personalityType: e.target.value })}>
+										<option value="">All Types</option>
+										{analytics?.personalityStats?.map((stat) => (
+											<option key={stat._id} value={stat._id}>
+												{stat._id}
+											</option>
+										))}
+									</select>
+								</div>
+								<button className="btn btn-primary" onClick={applyFilters}>
+									🔍 Apply Filters
+								</button>
+							</div>
+						</div>
 					</>
 				)}
 
 				{activeView === "overview" && (
 					<>
-				{/* Filters */}
-				<div
-					style={{
-						background: "var(--bg-glass)",
-						padding: "2rem",
-						borderRadius: "var(--border-radius)",
-						border: "1px solid var(--border-color)",
-						marginBottom: "2rem",
-					}}
-				>
-					<h3 style={{ marginTop: 0, color: "var(--text-primary)" }}>🔍 Filter Results</h3>
-					<div
-						style={{
-							display: "grid",
-							gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-							gap: "1rem",
-							alignItems: "end",
-						}}
-					>
-						<div className="form-group">
-							<label className="form-label">User Email</label>
-							<input type="text" className="form-input" placeholder="Search by email" value={filters.email} onChange={(e) => setFilters({ ...filters, email: e.target.value })} />
-						</div>
-						<div className="form-group">
-							<label className="form-label">Start Date</label>
-							<input type="date" className="form-input" value={filters.startDate} onChange={(e) => setFilters({ ...filters, startDate: e.target.value })} />
-						</div>
-						<div className="form-group">
-							<label className="form-label">End Date</label>
-							<input type="date" className="form-input" value={filters.endDate} onChange={(e) => setFilters({ ...filters, endDate: e.target.value })} />
-						</div>
-						<div className="form-group">
-							<label className="form-label">Personality Type</label>
-							<select className="form-input" value={filters.personalityType} onChange={(e) => setFilters({ ...filters, personalityType: e.target.value })}>
-								<option value="">All Types</option>
-								{analytics?.personalityStats?.map((stat) => (
-									<option key={stat._id} value={stat._id}>
-										{stat._id}
-									</option>
-								))}
-							</select>
-						</div>
-						<button className="btn btn-primary" onClick={applyFilters}>
-							🔍 Apply Filters
-						</button>
-					</div>
-				</div>
-			</div>
-
-			{/* Filtered Results */}
-			{filteredResults.length > 0 && (
-				<div className="page-container" style={{ marginTop: "2rem" }}>
-					<h3 style={{ color: "var(--text-primary)" }}>📋 Filtered Results ({filteredResults.length})</h3>
-					<div
-						style={{
-							background: "var(--bg-glass)",
-							borderRadius: "var(--border-radius)",
-							border: "1px solid var(--border-color)",
-							overflow: "hidden",
-						}}
-					>
-						<table
-							style={{
-								width: "100%",
-								borderCollapse: "collapse",
-								color: "var(--text-primary)",
-							}}
-						>
-							<thead>
-								<tr style={{ background: "var(--bg-secondary)" }}>
-									<th style={{ padding: "1rem", textAlign: "left", fontWeight: "600" }}>Email</th>
-									<th style={{ padding: "1rem", textAlign: "left", fontWeight: "600" }}>Personality Type</th>
-									<th style={{ padding: "1rem", textAlign: "left", fontWeight: "600" }}>Date</th>
-								</tr>
-							</thead>
-							<tbody>
-								{filteredResults.map((result, index) => (
-									<tr
-										key={index}
+						{/* Filtered Results */}
+						{filteredResults.length > 0 && (
+							<div className="page-container" style={{ marginTop: "2rem" }}>
+								<h3 style={{ color: "var(--text-primary)" }}>📋 Filtered Results ({filteredResults.length})</h3>
+								<div
+									style={{
+										background: "var(--bg-glass)",
+										borderRadius: "var(--border-radius)",
+										border: "1px solid var(--border-color)",
+										overflow: "hidden",
+									}}
+								>
+									<table
 										style={{
-											borderBottom: "1px solid var(--border-color)",
-											transition: "var(--transition)",
+											width: "100%",
+											borderCollapse: "collapse",
+											color: "var(--text-primary)",
 										}}
 									>
-										<td style={{ padding: "1rem" }}>{result.email}</td>
-										<td style={{ padding: "1rem" }}>
-											<span
-												style={{
-													background: "var(--primary-color)",
-													color: "white",
-													padding: "0.25rem 0.5rem",
-													borderRadius: "4px",
-													fontSize: "0.875rem",
-												}}
-											>
-												{result.dominantTrait}
-											</span>
-										</td>
-										<td style={{ padding: "1rem", color: "var(--text-secondary)" }}>{new Date(result.timestamp).toLocaleDateString()}</td>
-									</tr>
-								))}
-							</tbody>
-						</table>
-					</div>
-</div>
+										<thead>
+											<tr style={{ background: "var(--bg-secondary)" }}>
+												<th style={{ padding: "1rem", textAlign: "left", fontWeight: "600" }}>Email</th>
+												<th style={{ padding: "1rem", textAlign: "left", fontWeight: "600" }}>Personality Type</th>
+												<th style={{ padding: "1rem", textAlign: "left", fontWeight: "600" }}>Date</th>
+											</tr>
+										</thead>
+										<tbody>
+											{filteredResults.map((result, index) => (
+												<tr
+													key={index}
+													style={{
+															borderBottom: "1px solid var(--border-color)",
+															transition: "var(--transition)",
+													}}
+												>
+													<td style={{ padding: "1rem" }}>{result.email}</td>
+													<td style={{ padding: "1rem" }}>
+															<span
+																style={{
+																		background: "var(--primary-color)",
+																		color: "white",
+																		padding: "0.25rem 0.5rem",
+																		borderRadius: "4px",
+																		fontSize: "0.875rem",
+																	}}
+															>
+																{result.dominantTrait}
+															</span>
+													</td>
+													<td style={{ padding: "1rem", color: "var(--text-secondary)" }}>{new Date(result.timestamp).toLocaleDateString()}</td>
+												</tr>
+											))}
+										</tbody>
+									</table>
+								</div>
+							</div>
+						)}
 					</>
 				)}
 
- {activeView === "comparison" && (
+				{activeView === "profiles" && (
+					<div>
+						<h3 style={{ color: "var(--text-primary)", marginBottom: "1rem" }}>
+							👥 User Profiles Management
+						</h3>
+						{selectedUser ? (
+							<div>
+								<button 
+									onClick={() => setSelectedUser(null)}
+									style={{
+										background: "var(--accent-color)",
+										color: "white",
+										border: "none",
+										padding: "0.5rem 1rem",
+										borderRadius: "8px",
+										marginBottom: "1rem",
+										cursor: "pointer"
+									}}
+								>
+									← Back to Users
+								</button>
+								<DetailedUserProfile user={selectedUser} token={token} />
+							</div>
+						) : (
+							<div
+								style={{
+									background: "var(--bg-glass)",
+									borderRadius: "var(--border-radius)",
+									border: "1px solid var(--border-color)",
+									overflow: "hidden",
+								}}
+							>
+								<table
+									style={{
+										width: "100%",
+										borderCollapse: "collapse",
+										color: "var(--text-primary)",
+									}}
+								>
+									<thead>
+										<tr style={{ background: "var(--bg-secondary)" }}>
+											<th style={{ padding: "1rem", textAlign: "left", fontWeight: "600" }}>Email</th>
+											<th style={{ padding: "1rem", textAlign: "left", fontWeight: "600" }}>Total Quizzes</th>
+											<th style={{ padding: "1rem", textAlign: "left", fontWeight: "600" }}>Last Activity</th>
+											<th style={{ padding: "1rem", textAlign: "left", fontWeight: "600" }}>Actions</th>
+										</tr>
+									</thead>
+									<tbody>
+										{users.map((user, index) => (
+											<tr
+												key={index}
+												style={{
+															borderBottom: "1px solid var(--border-color)",
+															transition: "var(--transition)",
+												}}
+											>
+												<td style={{ padding: "1rem" }}>{user.email}</td>
+												<td style={{ padding: "1rem" }}>
+															<span
+																style={{
+																		background: "var(--success-color)",
+																		color: "white",
+																		padding: "0.25rem 0.5rem",
+																		borderRadius: "4px",
+																		fontSize: "0.875rem",
+																	}}
+															>
+																{user.totalQuizzes}
+															</span>
+												</td>
+												<td style={{ padding: "1rem", color: "var(--text-secondary)" }}>
+													{user.results.length > 0 ? new Date(Math.max(...user.results.map((r) => new Date(r.timestamp)))).toLocaleDateString() : "Never"}
+												</td>
+												<td style={{ padding: "1rem" }}>
+															<button 
+																onClick={() => setSelectedUser(user)}
+																style={{
+																		background: "var(--primary-color)",
+																		color: "white",
+																		border: "none",
+																		padding: "0.5rem 1rem",
+																		borderRadius: "4px",
+																		marginRight: "0.5rem",
+																		fontSize: "0.875rem",
+																		cursor: "pointer"
+																	}}
+															>
+																👁️ View
+															</button>
+															<button 
+																onClick={() => deleteUser(user.email)} 
+																style={{ 
+																		background: "var(--danger-color, #dc3545)",
+																		color: "white",
+																		border: "none",
+																		padding: "0.5rem 1rem",
+																		borderRadius: "4px",
+																		fontSize: "0.875rem",
+																		cursor: "pointer"
+																	}}
+															>
+																🗑️ Delete
+															</button>
+												</td>
+											</tr>
+										))}
+									</tbody>
+								</table>
+							</div>
+						)}
+					</div>
+				)}
+
+				{activeView === "comparison" && (
 					<UserComparison token={token} />
 				)}
 			</div>
-		</div>
-	);
-};
-
-export default AdminDashboard;
-				<div
-					style={{
-						background: "var(--bg-glass)",
-						borderRadius: "var(--border-radius)",
-						border: "1px solid var(--border-color)",
-						overflow: "hidden",
-					}}
-				>
-					<table
-						style={{
-							width: "100%",
-							borderCollapse: "collapse",
-							color: "var(--text-primary)",
-						}}
-					>
-						<thead>
-							<tr style={{ background: "var(--bg-secondary)" }}>
-								<th style={{ padding: "1rem", textAlign: "left", fontWeight: "600" }}>Email</th>
-								<th style={{ padding: "1rem", textAlign: "left", fontWeight: "600" }}>Total Quizzes</th>
-								<th style={{ padding: "1rem", textAlign: "left", fontWeight: "600" }}>Last Activity</th>
-								<th style={{ padding: "1rem", textAlign: "left", fontWeight: "600" }}>Actions</th>
-							</tr>
-						</thead>
-						<tbody>
-							{users.map((user, index) => (
-								<tr
-									key={index}
-									style={{
-										borderBottom: "1px solid var(--border-color)",
-										transition: "var(--transition)",
-									}}
-								>
-									<td style={{ padding: "1rem" }}>{user.email}</td>
-									<td style={{ padding: "1rem" }}>
-										<span
-											style={{
-												background: "var(--success-color)",
-												color: "white",
-												padding: "0.25rem 0.5rem",
-												borderRadius: "4px",
-												fontSize: "0.875rem",
-											}}
-										>
-											{user.totalQuizzes}
-										</span>
-									</td>
-									<td style={{ padding: "1rem", color: "var(--text-secondary)" }}>{user.results.length > 0 ? new Date(Math.max(...user.results.map((r) => new Date(r.timestamp)))).toLocaleDateString() : "Never"}</td>
-									<td style={{ padding: "1rem" }}>
-										<button className="btn btn-danger" onClick={() => deleteUser(user.email)} style={{ fontSize: "0.875rem", padding: "0.5rem 1rem" }}>
-											🗑️ Delete
-										</button>
-									</td>
-								</tr>
-							))}
-						</tbody>
-					</table>
-				</div>
-			</div>
 
 			{/* Database Data Section */}
-			{databaseData && (
+			{databaseData && activeView === "overview" && (
 				<div className="page-container" style={{ marginTop: "2rem" }}>
-					<h3 style={{ color: "var(--text-primary)", marginBottom: "1.5rem" }}>🗄️ Database Overview</h3>
+					<h3 style={{ color: "var(--text-primary)", marginBottom: "1.5rem" }}>
+							🗄️ Database Overview
+					</h3>
 					
 					<div style={{
-						display: "grid",
-						gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-						gap: "1rem",
-						marginBottom: "2rem"
-					}}>
-						<div style={{
-							background: "var(--bg-glass)",
-							padding: "1rem",
-							borderRadius: "var(--border-radius)",
-							border: "1px solid var(--border-color)",
-							textAlign: "center"
-						}}>
-							<div style={{ fontSize: "1.5rem", fontWeight: "bold", color: "var(--primary-color)" }}>
-								{databaseData.statistics.totalUsers}
+								display: "grid",
+								gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+								gap: "1rem",
+								marginBottom: "2rem"
+							}}
+						>
+							<div style={{
+								background: "var(--bg-glass)",
+								padding: "1rem",
+								borderRadius: "var(--border-radius)",
+								border: "1px solid var(--border-color)",
+								textAlign: "center"
+							}}>
+								<div style={{ fontSize: "1.5rem", fontWeight: "bold", color: "var(--primary-color)" }}>
+									{databaseData.statistics.totalUsers}
+								</div>
+								<div style={{ color: "var(--text-secondary)", fontSize: "0.875rem" }}>
+									Total Users
+								</div>
 							</div>
-							<div style={{ color: "var(--text-secondary)", fontSize: "0.875rem" }}>
-								Total Users
+							<div style={{
+								background: "var(--bg-glass)",
+								padding: "1rem",
+								borderRadius: "var(--border-radius)",
+								border: "1px solid var(--border-color)",
+								textAlign: "center"
+							}}>
+								<div style={{ fontSize: "1.5rem", fontWeight: "bold", color: "var(--primary-color)" }}>
+									{databaseData.statistics.totalResults}
+								</div>
+								<div style={{ color: "var(--text-secondary)", fontSize: "0.875rem" }}>
+									Total Results
+								</div>
+							</div>
+							<div style={{
+								background: "var(--bg-glass)",
+								padding: "1rem",
+								borderRadius: "var(--border-radius)",
+								border: "1px solid var(--border-color)",
+								textAlign: "center"
+							}}>
+								<div style={{ fontSize: "1.5rem", fontWeight: "bold", color: "var(--primary-color)" }}>
+									{databaseData.statistics.averageResultsPerUser}
+								</div>
+								<div style={{ color: "var(--text-secondary)", fontSize: "0.875rem" }}>
+									Avg Results/User
+								</div>
 							</div>
 						</div>
-						<div style={{
-							background: "var(--bg-glass)",
-							padding: "1rem",
-							borderRadius: "var(--border-radius)",
-							border: "1px solid var(--border-color)",
-							textAlign: "center"
-						}}>
-							<div style={{ fontSize: "1.5rem", fontWeight: "bold", color: "var(--primary-color)" }}>
-								{databaseData.statistics.totalResults}
-							</div>
-							<div style={{ color: "var(--text-secondary)", fontSize: "0.875rem" }}>
-								Total Results
-							</div>
-						</div>
-						<div style={{
-							background: "var(--bg-glass)",
-							padding: "1rem",
-							borderRadius: "var(--border-radius)",
-							border: "1px solid var(--border-color)",
-							textAlign: "center"
-						}}>
-							<div style={{ fontSize: "1.5rem", fontWeight: "bold", color: "var(--primary-color)" }}>
-								{databaseData.statistics.averageResultsPerUser}
-							</div>
-							<div style={{ color: "var(--text-secondary)", fontSize: "0.875rem" }}>
-								Avg Results/User
-							</div>
-						</div>
-					</div>
 
 					<div style={{
-						display: "grid",
-						gridTemplateColumns: "1fr 1fr",
-						gap: "2rem"
-					}}>
+								display: "grid",
+								gridTemplateColumns: "1fr 1fr",
+								gap: "2rem"
+							}}>
 						{/* Users List */}
 						<div style={{
-							background: "var(--bg-glass)",
-							borderRadius: "var(--border-radius)",
-							border: "1px solid var(--border-color)",
-							overflow: "hidden"
-						}}>
+								background: "var(--bg-glass)",
+								borderRadius: "var(--border-radius)",
+								border: "1px solid var(--border-color)",
+								overflow: "hidden"
+							}}>
 							<div style={{
 								background: "var(--bg-secondary)",
 								padding: "1rem",
@@ -575,11 +641,11 @@ export default AdminDashboard;
 
 						{/* Recent Results */}
 						<div style={{
-							background: "var(--bg-glass)",
-							borderRadius: "var(--border-radius)",
-							border: "1px solid var(--border-color)",
-							overflow: "hidden"
-						}}>
+								background: "var(--bg-glass)",
+								borderRadius: "var(--border-radius)",
+								border: "1px solid var(--border-color)",
+								overflow: "hidden"
+							}}>
 							<div style={{
 								background: "var(--bg-secondary)",
 								padding: "1rem",
@@ -606,25 +672,6 @@ export default AdminDashboard;
 												borderRadius: "4px", 
 												fontSize: "0.75rem" 
 											}}>
-												{result.quizId}
-											</span>
-										</div>
-										<div style={{ 
-											fontSize: "0.875rem", 
-											color: "var(--text-secondary)",
-											marginTop: "0.25rem" 
-										}}>
-											{result.dominantTrait} • {new Date(result.timestamp).toLocaleDateString()}
-										</div>
-									</div>
-								))}
-							</div>
-						</div>
-					</div>
-				</div>
-			)}
-		</div>
-	);
 };
 
 export default AdminDashboard;

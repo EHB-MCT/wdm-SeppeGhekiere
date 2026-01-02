@@ -9,6 +9,8 @@ const app = express();
 const port = 3000;
 const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/quizdb";
 const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey";
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "admin@test.com";
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin123";
 
 // MongoDB setup
 const client = new MongoClient(MONGO_URI);
@@ -23,6 +25,8 @@ async function connectDB() {
 		try {
 			await client.connect();
 			console.log("Connected to MongoDB");
+			// Create default admin user after connection
+			await createDefaultAdmin();
 			return;
 		} catch (err) {
 			console.error(`Failed to connect to MongoDB (retries left: ${retries - 1}):`, err.message);
@@ -31,7 +35,7 @@ async function connectDB() {
 				console.error("Max retries reached. Continuing without MongoDB...");
 				return; // Continue without MongoDB instead of exiting
 			}
-			// Wait 5 seconds before retrying
+			// Wait 5 seconds before retry
 			await new Promise(resolve => setTimeout(resolve, 5000));
 		}
 	}
@@ -147,6 +151,23 @@ const isAdmin = (req, res, next) => {
 	next();
 };
 
+// Create default admin user if not exists
+const createDefaultAdmin = async () => {
+	try {
+		const existingAdmin = await usersCollection.findOne({ email: ADMIN_EMAIL });
+		if (!existingAdmin) {
+			const hashedPassword = await bcrypt.hash(ADMIN_PASSWORD, 10);
+			await usersCollection.insertOne({ 
+				email: ADMIN_EMAIL, 
+				password: hashedPassword 
+			});
+			console.log('Default admin user created:', ADMIN_EMAIL);
+		}
+	} catch (err) {
+		console.error('Error creating default admin:', err);
+	}
+};
+
 // Admin analytics endpoints
 app.get("/api/admin/analytics", authenticateToken, isAdmin, async (req, res) => {
 	try {
@@ -238,6 +259,34 @@ app.delete("/api/admin/users/:email", authenticateToken, isAdmin, async (req, re
 	} catch (err) {
 		console.error(err);
 		res.status(500).json({ error: "Failed to delete user" });
+	}
+});
+
+// Get all database data (for debugging/admin purposes)
+app.get("/api/admin/database", authenticateToken, isAdmin, async (req, res) => {
+	try {
+		const users = await usersCollection.find({}).project({ password: 0 }).toArray();
+		const results = await resultsCollection.find({}).toArray();
+		
+		res.json({
+			users: {
+				total: users.length,
+				data: users
+			},
+			results: {
+				total: results.length,
+				data: results
+			},
+			statistics: {
+				totalUsers: users.length,
+				totalResults: results.length,
+				quizzesTaken: results.length,
+				averageResultsPerUser: users.length > 0 ? (results.length / users.length).toFixed(2) : 0
+			}
+		});
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ error: "Failed to fetch database data" });
 	}
 });
 
