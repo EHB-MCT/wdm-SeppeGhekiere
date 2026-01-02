@@ -79,7 +79,7 @@ const AdminDashboard = ({ token }) => {
 		});
 
 		try {
-			const response = await fetch(`/api/admin/results/filter?${params}`, {
+			const response = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/results/filter?${params}`, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			if (response.ok) {
@@ -97,7 +97,7 @@ const AdminDashboard = ({ token }) => {
 		if (!confirm(`Are you sure you want to delete user ${email}?`)) return;
 
 		try {
-			const response = await fetch(`/api/admin/users/${email}`, {
+			const response = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/users/${email}`, {
 				method: "DELETE",
 				headers: { Authorization: `Bearer ${token}` },
 			});
@@ -143,16 +143,17 @@ const AdminDashboard = ({ token }) => {
 
 				{/* Navigation Tabs */}
 				<div style={{ marginBottom: "2rem" }}>
-					<div style={{
+					<div
+						style={{
 							display: "flex",
 							gap: "0.5rem",
 							background: "var(--bg-glass)",
 							padding: "0.5rem",
 							borderRadius: "var(--border-radius)",
-							border: "1px solid var(--border-color)"
-					}}
+							border: "1px solid var(--border-color)",
+						}}
 					>
-						{["overview", "profiles", "comparison"].map(view => (
+						{["overview", "profiles", "comparison"].map((view) => (
 							<button
 								key={view}
 								onClick={() => setActiveView(view)}
@@ -164,13 +165,13 @@ const AdminDashboard = ({ token }) => {
 									borderRadius: "8px",
 									cursor: "pointer",
 									fontWeight: "600",
-									transition: "all 0.2s ease"
+									transition: "all 0.2s ease",
 								}}
 							>
 								{view === "overview" ? "📊 Overview" : view === "profiles" ? "👥 Profiles" : "🔍 Comparison"}
 							</button>
-					))}
-						</div>
+						))}
+					</div>
 				</div>
 
 				{activeView === "overview" && (
@@ -389,23 +390,23 @@ const AdminDashboard = ({ token }) => {
 												<tr
 													key={index}
 													style={{
-															borderBottom: "1px solid var(--border-color)",
-															transition: "var(--transition)",
+														borderBottom: "1px solid var(--border-color)",
+														transition: "var(--transition)",
 													}}
 												>
 													<td style={{ padding: "1rem" }}>{result.email}</td>
 													<td style={{ padding: "1rem" }}>
-															<span
-																style={{
-																		background: "var(--primary-color)",
-																		color: "white",
-																		padding: "0.25rem 0.5rem",
-																		borderRadius: "4px",
-																		fontSize: "0.875rem",
-																	}}
-															>
-																{result.dominantTrait}
-															</span>
+														<span
+															style={{
+																background: "var(--primary-color)",
+																color: "white",
+																padding: "0.25rem 0.5rem",
+																borderRadius: "4px",
+																fontSize: "0.875rem",
+															}}
+														>
+															{result.dominantTrait}
+														</span>
 													</td>
 													<td style={{ padding: "1rem", color: "var(--text-secondary)" }}>{new Date(result.timestamp).toLocaleDateString()}</td>
 												</tr>
@@ -420,12 +421,10 @@ const AdminDashboard = ({ token }) => {
 
 				{activeView === "profiles" && (
 					<div>
-						<h3 style={{ color: "var(--text-primary)", marginBottom: "1rem" }}>
-							👥 User Profiles Management
-						</h3>
+						<h3 style={{ color: "var(--text-primary)", marginBottom: "1rem" }}>👥 User Profiles Management</h3>
 						{selectedUser ? (
 							<div>
-								<button 
+								<button
 									onClick={() => setSelectedUser(null)}
 									style={{
 										background: "var(--accent-color)",
@@ -434,7 +433,7 @@ const AdminDashboard = ({ token }) => {
 										padding: "0.5rem 1rem",
 										borderRadius: "8px",
 										marginBottom: "1rem",
-										cursor: "pointer"
+										cursor: "pointer",
 									}}
 								>
 									← Back to Users
@@ -470,57 +469,55 @@ const AdminDashboard = ({ token }) => {
 											<tr
 												key={index}
 												style={{
-															borderBottom: "1px solid var(--border-color)",
-															transition: "var(--transition)",
+													borderBottom: "1px solid var(--border-color)",
+													transition: "var(--transition)",
 												}}
 											>
 												<td style={{ padding: "1rem" }}>{user.email}</td>
 												<td style={{ padding: "1rem" }}>
-															<span
-																style={{
-																		background: "var(--success-color)",
-																		color: "white",
-																		padding: "0.25rem 0.5rem",
-																		borderRadius: "4px",
-																		fontSize: "0.875rem",
-																	}}
-															>
-																{user.totalQuizzes}
-															</span>
+													<span
+														style={{
+															background: "var(--success-color)",
+															color: "white",
+															padding: "0.25rem 0.5rem",
+															borderRadius: "4px",
+															fontSize: "0.875rem",
+														}}
+													>
+														{user.totalQuizzes}
+													</span>
 												</td>
-												<td style={{ padding: "1rem", color: "var(--text-secondary)" }}>
-													{user.results.length > 0 ? new Date(Math.max(...user.results.map((r) => new Date(r.timestamp)))).toLocaleDateString() : "Never"}
-												</td>
+												<td style={{ padding: "1rem", color: "var(--text-secondary)" }}>{user.results.length > 0 ? new Date(Math.max(...user.results.map((r) => new Date(r.timestamp)))).toLocaleDateString() : "Never"}</td>
 												<td style={{ padding: "1rem" }}>
-															<button 
-																onClick={() => setSelectedUser(user)}
-																style={{
-																		background: "var(--primary-color)",
-																		color: "white",
-																		border: "none",
-																		padding: "0.5rem 1rem",
-																		borderRadius: "4px",
-																		marginRight: "0.5rem",
-																		fontSize: "0.875rem",
-																		cursor: "pointer"
-																	}}
-															>
-																👁️ View
-															</button>
-															<button 
-																onClick={() => deleteUser(user.email)} 
-																style={{ 
-																		background: "var(--danger-color, #dc3545)",
-																		color: "white",
-																		border: "none",
-																		padding: "0.5rem 1rem",
-																		borderRadius: "4px",
-																		fontSize: "0.875rem",
-																		cursor: "pointer"
-																	}}
-															>
-																🗑️ Delete
-															</button>
+													<button
+														onClick={() => setSelectedUser(user)}
+														style={{
+															background: "var(--primary-color)",
+															color: "white",
+															border: "none",
+															padding: "0.5rem 1rem",
+															borderRadius: "4px",
+															marginRight: "0.5rem",
+															fontSize: "0.875rem",
+															cursor: "pointer",
+														}}
+													>
+														👁️ View
+													</button>
+													<button
+														onClick={() => deleteUser(user.email)}
+														style={{
+															background: "var(--danger-color, #dc3545)",
+															color: "white",
+															border: "none",
+															padding: "0.5rem 1rem",
+															borderRadius: "4px",
+															fontSize: "0.875rem",
+															cursor: "pointer",
+														}}
+													>
+														🗑️ Delete
+													</button>
 												</td>
 											</tr>
 										))}
@@ -531,107 +528,107 @@ const AdminDashboard = ({ token }) => {
 					</div>
 				)}
 
-				{activeView === "comparison" && (
-					<UserComparison token={token} />
-				)}
+				{activeView === "comparison" && <UserComparison token={token} />}
 			</div>
 
 			{/* Database Data Section */}
 			{databaseData && activeView === "overview" && (
 				<div className="page-container" style={{ marginTop: "2rem" }}>
-					<h3 style={{ color: "var(--text-primary)", marginBottom: "1.5rem" }}>
-							🗄️ Database Overview
-					</h3>
-					
-					<div style={{
-								display: "grid",
-								gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-								gap: "1rem",
-								marginBottom: "2rem"
+					<h3 style={{ color: "var(--text-primary)", marginBottom: "1.5rem" }}>🗄️ Database Overview</h3>
+
+					<div
+						style={{
+							display: "grid",
+							gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+							gap: "1rem",
+							marginBottom: "2rem",
+						}}
+					>
+						<div
+							style={{
+								background: "var(--bg-glass)",
+								padding: "1rem",
+								borderRadius: "var(--border-radius)",
+								border: "1px solid var(--border-color)",
+								textAlign: "center",
 							}}
 						>
-							<div style={{
+							<div style={{ fontSize: "1.5rem", fontWeight: "bold", color: "var(--primary-color)" }}>{databaseData.statistics.totalUsers}</div>
+							<div style={{ color: "var(--text-secondary)", fontSize: "0.875rem" }}>Total Users</div>
+						</div>
+						<div
+							style={{
 								background: "var(--bg-glass)",
 								padding: "1rem",
 								borderRadius: "var(--border-radius)",
 								border: "1px solid var(--border-color)",
-								textAlign: "center"
-							}}>
-								<div style={{ fontSize: "1.5rem", fontWeight: "bold", color: "var(--primary-color)" }}>
-		{databaseData.statistics.totalUsers}
-								</div>
-							</div>
-							</div>
+								textAlign: "center",
+							}}
+						>
+							<div style={{ fontSize: "1.5rem", fontWeight: "bold", color: "var(--primary-color)" }}>{databaseData.statistics.totalResults}</div>
+							<div style={{ color: "var(--text-secondary)", fontSize: "0.875rem" }}>Total Results</div>
 						</div>
-							<div style={{
+						<div
+							style={{
 								background: "var(--bg-glass)",
 								padding: "1rem",
 								borderRadius: "var(--border-radius)",
 								border: "1px solid var(--border-color)",
-								textAlign: "center"
-							}}>
-								<div style={{ fontSize: "1.5rem", fontWeight: "bold", color: "var(--primary-color)" }}>
-		<>
-		{databaseData.statistics.totalResults}
-								</div>
+								textAlign: "center",
+							}}
+						>
+							<div style={{ fontSize: "1.5rem", fontWeight: "bold", color: "var(--primary-color)" }}>{databaseData.statistics.averageResultsPerUser}</div>
+							<div style={{ color: "var(--text-secondary)", fontSize: "0.875rem" }}>Avg Results/User</div>
 						</div>
-							<div style={{
-								background: "var(--bg-glass)",
-								padding: "1rem",
-								borderRadius: "var(--border-radius)",
-								border: "1px solid var(--border-color)",
-								textAlign: "center"
-							}}>
-								<div style={{ fontSize: "1.5rem", fontWeight: "bold", color: "var(--primary-color)" }}>
-									<>
-		{databaseData.statistics.averageResultsPerUser}
-								</div>
-							</div>
-							</div>
-								<div style={{ color: "var(--text-secondary)", fontSize: "0.875rem" }}>
-									Avg Results/User
-								</div>
-							</div>
-						</div>
+					</div>
 
-					<div style={{
-								display: "grid",
-								gridTemplateColumns: "1fr 1fr",
-								gap: "2rem"
-							}}>
+					<div
+						style={{
+							display: "grid",
+							gridTemplateColumns: "1fr 1fr",
+							gap: "2rem",
+						}}
+					>
 						{/* Users List */}
-						<div style={{
+						<div
+							style={{
 								background: "var(--bg-glass)",
 								borderRadius: "var(--border-radius)",
 								border: "1px solid var(--border-color)",
-								overflow: "hidden"
-							}}>
-							<div style={{
-								background: "var(--bg-secondary)",
-								padding: "1rem",
-								borderBottom: "1px solid var(--border-color)"
-							}}>
-								<h4 style={{ margin: 0, color: "var(--text-primary)" }}>
-									👥 Users ({databaseData.users.total})
-								</h4>
+								overflow: "hidden",
+							}}
+						>
+							<div
+								style={{
+									background: "var(--bg-secondary)",
+									padding: "1rem",
+									borderBottom: "1px solid var(--border-color)",
+								}}
+							>
+								<h4 style={{ margin: 0, color: "var(--text-primary)" }}>👥 Users ({databaseData.users.total})</h4>
 							</div>
 							<div style={{ maxHeight: "300px", overflow: "auto" }}>
 								{databaseData.users.data.map((user, index) => (
-									<div key={index} style={{
-										padding: "0.75rem 1rem",
-										borderBottom: "1px solid var(--border-color)",
-										display: "flex",
-										justifyContent: "space-between",
-										alignItems: "center"
-									}}>
+									<div
+										key={index}
+										style={{
+											padding: "0.75rem 1rem",
+											borderBottom: "1px solid var(--border-color)",
+											display: "flex",
+											justifyContent: "space-between",
+											alignItems: "center",
+										}}
+									>
 										<span style={{ color: "var(--text-primary)" }}>{user.email}</span>
-										<span style={{ 
-											background: "var(--accent-color)", 
-											color: "white", 
-											padding: "0.25rem 0.5rem", 
-											borderRadius: "4px", 
-											fontSize: "0.75rem" 
-										}}>
+										<span
+											style={{
+												background: "var(--accent-color)",
+												color: "white",
+												padding: "0.25rem 0.5rem",
+												borderRadius: "4px",
+												fontSize: "0.75rem",
+											}}
+										>
 											User
 										</span>
 									</div>
@@ -640,38 +637,56 @@ const AdminDashboard = ({ token }) => {
 						</div>
 
 						{/* Recent Results */}
-						<div style={{
+						<div
+							style={{
 								background: "var(--bg-glass)",
 								borderRadius: "var(--border-radius)",
 								border: "1px solid var(--border-color)",
-								overflow: "hidden"
-							}}>
-							<div style={{
-								background: "var(--bg-secondary)",
-								padding: "1rem",
-								borderBottom: "1px solid var(--border-color)"
-							}}>
-								<h4 style={{ margin: 0, color: "var(--text-primary)" }}>
-									📊 Recent Results ({databaseData.results.total})
-								</h4>
+								overflow: "hidden",
+							}}
+						>
+							<div
+								style={{
+									background: "var(--bg-secondary)",
+									padding: "1rem",
+									borderBottom: "1px solid var(--border-color)",
+								}}
+							>
+								<h4 style={{ margin: 0, color: "var(--text-primary)" }}>📊 Recent Results ({databaseData.results.total})</h4>
 							</div>
 							<div style={{ maxHeight: "300px", overflow: "auto" }}>
 								{databaseData.results.data.slice(0, 10).map((result, index) => (
-									<div key={index} style={{
-										padding: "0.75rem 1rem",
-										borderBottom: "1px solid var(--border-color)"
-									}}>
+									<div
+										key={index}
+										style={{
+											padding: "0.75rem 1rem",
+											borderBottom: "1px solid var(--border-color)",
+										}}
+									>
 										<div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-											<span style={{ color: "var(--text-primary)", fontWeight: "500" }}>
-												{result.email}
+											<span style={{ color: "var(--text-primary)", fontWeight: "500" }}>{result.email}</span>
+											<span
+												style={{
+													background: "var(--success-color)",
+													color: "white",
+													padding: "0.25rem 0.5rem",
+													borderRadius: "4px",
+													fontSize: "0.75rem",
+												}}
+											>
+												{result.dominantTrait}
 											</span>
-											<span style={{ 
-												background: "var(--success-color)", 
-												color: "white", 
-												padding: "0.25rem 0.5rem", 
-												borderRadius: "4px", 
-												fontSize: "0.75rem" 
-											}}>
+										</div>
+										<div style={{ color: "var(--text-secondary)", fontSize: "0.75rem" }}>{new Date(result.timestamp).toLocaleDateString()}</div>
+									</div>
+								))}
+							</div>
+						</div>
+					</div>
+				</div>
+			)}
+		</div>
+	);
 };
 
 export default AdminDashboard;
