@@ -121,26 +121,13 @@ const AdminDashboard = ({ token }) => {
 				</div>
 			</div>
 		);
-	}
+}
 
-return (
-		<div>
-			<div className="page-container">
-				{/* Navigation Tabs */}
-				<div style={{ marginBottom: "2rem" }}>
-					<div style={{
-						display: "flex",
-						gap: "0.5rem",
-						background: "var(--bg-glass)",
-						padding: "0.5rem",
-						borderRadius: "var(--border-radius)",
-						border: "1px solid var(--border-color)"
-					}}>
-						{["overview", "profiles", "comparison"].map(view => (
-							<button
-								key={view}
-								onClick={() => setActiveView(view)}
-								style={{
+				{activeView === "overview" && (
+					<>
+				{/* Overview Cards */}
+				<div
+					style={{
 									background: activeView === view ? "var(--primary-color)" : "transparent",
 									color: activeView === view ? "white" : "var(--text-primary)",
 									border: "none",
@@ -150,11 +137,11 @@ return (
 									fontWeight: "600",
 									transition: "all 0.2s ease"
 								}}
-							>
-								{view === "overview" ? "📊 Overview" : 
-								 view === "profiles" ? "👥 Profiles" :
-								 "🔍 Comparison"}
-							</button>
+                                                        >
+                                                                {view === "overview" ? "📊 Overview" :
+                                                                 view === "profiles" ? "👥 Profiles" :
+                                                                 "🔍 Comparison"}
+                                                        </button>
 						))}
 					</div>
 				</div>
@@ -304,8 +291,12 @@ return (
 							<Line type="monotone" dataKey="count" stroke="var(--primary-color)" strokeWidth={3} name="Quizzes Taken" dot={{ fill: "var(--primary-color)", strokeWidth: 2, r: 4 }} />
 						</LineChart>
 					</div>
-				</div>
+</div>
+					</>
+				)}
 
+				{activeView === "overview" && (
+					<>
 				{/* Filters */}
 				<div
 					style={{
@@ -410,123 +401,11 @@ return (
 							</tbody>
 						</table>
 					</div>
-				</div>
-			)}
-
-{activeView === "profiles" && (
-					<div>
-						<h3 style={{ color: "var(--text-primary)", marginBottom: "1rem" }}>
-							👥 User Profiles Management
-						</h3>
-						{selectedUser ? (
-							<div>
-								<button 
-									onClick={() => setSelectedUser(null)}
-									style={{
-										background: "var(--accent-color)",
-										color: "white",
-										border: "none",
-										padding: "0.5rem 1rem",
-										borderRadius: "8px",
-										marginBottom: "1rem",
-										cursor: "pointer"
-									}}
-								>
-									← Back to Users
-								</button>
-								<DetailedUserProfile user={selectedUser} token={token} />
-							</div>
-						) : (
-							<div
-								style={{
-									background: "var(--bg-glass)",
-									borderRadius: "var(--border-radius)",
-									border: "1px solid var(--border-color)",
-									overflow: "hidden",
-								}}
-							>
-								<table
-									style={{
-										width: "100%",
-										borderCollapse: "collapse",
-										color: "var(--text-primary)",
-									}}
-								>
-									<thead>
-										<tr style={{ background: "var(--bg-secondary)" }}>
-											<th style={{ padding: "1rem", textAlign: "left", fontWeight: "600" }}>Email</th>
-											<th style={{ padding: "1rem", textAlign: "left", fontWeight: "600" }}>Total Quizzes</th>
-											<th style={{ padding: "1rem", textAlign: "left", fontWeight: "600" }}>Last Activity</th>
-											<th style={{ padding: "1rem", textAlign: "left", fontWeight: "600" }}>Actions</th>
-										</tr>
-									</thead>
-									<tbody>
-										{users.map((user, index) => (
-											<tr
-												key={index}
-												style={{
-													borderBottom: "1px solid var(--border-color)",
-													transition: "var(--transition)",
-												}}
-											>
-												<td style={{ padding: "1rem" }}>{user.email}</td>
-												<td style={{ padding: "1rem" }}>
-													<span
-														style={{
-															background: "var(--success-color)",
-															color: "white",
-															padding: "0.25rem 0.5rem",
-															borderRadius: "4px",
-															fontSize: "0.875rem",
-														}}
-													>
-														{user.totalQuizzes}
-													</span>
-												</td>
-												<td style={{ padding: "1rem", color: "var(--text-secondary)" }}>
-													{user.results.length > 0 ? new Date(Math.max(...user.results.map((r) => new Date(r.timestamp)))).toLocaleDateString() : "Never"}
-												</td>
-												<td style={{ padding: "1rem" }}>
-													<button 
-														onClick={() => setSelectedUser(user)}
-														style={{
-															background: "var(--primary-color)",
-															color: "white",
-															border: "none",
-															padding: "0.5rem 1rem",
-															borderRadius: "4px",
-															marginRight: "0.5rem",
-															fontSize: "0.875rem",
-															cursor: "pointer"
-														}}
-													>
-														👁️ View
-													</button>
-													<button 
-														onClick={() => deleteUser(user.email)} 
-														style={{ 
-															background: "var(--danger-color, #dc3545)",
-															color: "white",
-															border: "none",
-															padding: "0.5rem 1rem",
-															borderRadius: "4px",
-															fontSize: "0.875rem",
-															cursor: "pointer"
-														}}
-													>
-														🗑️ Delete
-													</button>
-												</td>
-											</tr>
-										))}
-									</tbody>
-								</table>
-							</div>
-						)}
-					</div>
+</div>
+					</>
 				)}
 
-				{activeView === "comparison" && (
+ {activeView === "comparison" && (
 					<UserComparison token={token} />
 				)}
 			</div>

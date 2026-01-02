@@ -1,4 +1,4 @@
-import { useState } from "react";
+import "./quiz.css";
 import "./quiz.css";
 
 const Quizzes = ({ navigateTo }) => {

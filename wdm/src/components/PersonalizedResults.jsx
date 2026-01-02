@@ -1,17 +1,47 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
-const PersonalizedResults = ({ user, profile }) => {
+const PersonalizedResults = ({ profile }) => {
 	const [recommendations, setRecommendations] = useState([]);
 
-	useEffect(() => {
-		if (profile && profile.profile) {
-			const recs = generateRecommendations(profile);
-			setRecommendations(recs);
-		}
-	}, [profile]);
+	const getNextQuizRecommendations = (traits) => {
+		const quizRecs = [];
 
-	const generateRecommendations = (profile) => {
-		const { traits, dominantTrait, personalityType } = profile.profile;
+		// Recommend specific quizzes based on traits
+		if (traits.analytical < 50) {
+			quizRecs.push({
+				type: "quiz",
+				title: "Intelligence Assessment",
+				description: "Discover your analytical and logical thinking capabilities",
+				icon: "🧠",
+				action: "intelligence"
+			});
+		}
+
+		if (traits.creative < 50) {
+			quizRecs.push({
+				type: "quiz",
+				title: "Learning Style Quiz",
+				description: "Understand how you best absorb and process information",
+				icon: "📖",
+				action: "learning"
+			});
+		}
+
+		if (traits.dominance < 50 && traits.extroversion < 50) {
+			quizRecs.push({
+				type: "quiz",
+				title: "Career Aptitude Test",
+				description: "Find career paths that match your personality and skills",
+				icon: "💼",
+				action: "career"
+			});
+		}
+
+		return quizRecs;
+	};
+
+	const generateRecommendations = useCallback((profile) => {
+		const { traits } = profile.profile;
 		const recs = [];
 
 		// Generate career recommendations
@@ -100,53 +130,16 @@ const PersonalizedResults = ({ user, profile }) => {
 		}
 
 		// Generate quiz recommendations
-		const nextQuizzes = getNextQuizRecommendations(traits, personalityType);
+		const nextQuizzes = getNextQuizRecommendations(traits);
 		recs.push(...nextQuizzes);
 
 		return recs;
-	};
-
-	const getNextQuizRecommendations = (traits, personalityType) => {
-		const quizRecs = [];
-
-		// Recommend specific quizzes based on traits
-		if (traits.analytical < 50) {
-			quizRecs.push({
-				type: "quiz",
-				title: "Intelligence Assessment",
-				description: "Discover your analytical and logical thinking capabilities",
-				icon: "🧠",
-				action: "intelligence"
-			});
-		}
-
-		if (traits.creative < 50) {
-			quizRecs.push({
-				type: "quiz",
-				title: "Learning Style Quiz",
-				description: "Understand how you best absorb and process information",
-				icon: "📖",
-				action: "learning"
-			});
-		}
-
-		if (traits.dominance < 50 && traits.extroversion < 50) {
-			quizRecs.push({
-				type: "quiz",
-				title: "Career Aptitude Test",
-				description: "Find career paths that match your personality and skills",
-				icon: "💼",
-				action: "career"
-			});
-		}
-
-		return quizRecs;
-	};
+	}, []);
 
 	const getPersonalizedMessage = () => {
 		if (!profile || !profile.profile) return "";
 
-		const { traits, personalityType } = profile.profile;
+		const { traits } = profile.profile;
 		const dominant = Object.entries(traits).sort(([,a], [,b]) => b - a)[0];
 		const trait = dominant[0];
 		const score = dominant[1];
@@ -162,11 +155,18 @@ const PersonalizedResults = ({ user, profile }) => {
 			neuroticism: `Your emotional sensitivity (${score}%) gives you deep emotional awareness. While you may feel stress more intensely, you're also attuned to emotional nuances others miss.`
 		};
 
-		return messages[trait] || `As a ${personalityType}, you bring a unique combination of strengths to any situation. Your balanced personality allows you to adapt and thrive in various environments.`;
+		return messages[trait] || `As a well-balanced individual, you bring a unique combination of strengths to any situation. Your personality allows you to adapt and thrive in various environments.`;
 	};
 
+	useEffect(() => {
+		if (profile && profile.profile) {
+			const recs = generateRecommendations(profile);
+			setRecommendations(recs);
+		}
+	}, [profile, generateRecommendations]);
+
 	const handleQuizRecommendation = (quizType) => {
-		// This would typically navigate to the specific quiz
+		// This would typically navigate to specific quiz
 		console.log(`Navigate to ${quizType} quiz`);
 		// Implementation depends on your routing system
 	};
