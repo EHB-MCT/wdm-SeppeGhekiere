@@ -558,12 +558,11 @@ const AdminDashboard = ({ token }) => {
 								textAlign: "center"
 							}}>
 								<div style={{ fontSize: "1.5rem", fontWeight: "bold", color: "var(--primary-color)" }}>
-									{databaseData.statistics.totalUsers}
-								</div>
-								<div style={{ color: "var(--text-secondary)", fontSize: "0.875rem" }}>
-									Total Users
+		{databaseData.statistics.totalUsers}
 								</div>
 							</div>
+							</div>
+						</div>
 							<div style={{
 								background: "var(--bg-glass)",
 								padding: "1rem",
@@ -572,12 +571,10 @@ const AdminDashboard = ({ token }) => {
 								textAlign: "center"
 							}}>
 								<div style={{ fontSize: "1.5rem", fontWeight: "bold", color: "var(--primary-color)" }}>
-									{databaseData.statistics.totalResults}
+		<>
+		{databaseData.statistics.totalResults}
 								</div>
-								<div style={{ color: "var(--text-secondary)", fontSize: "0.875rem" }}>
-									Total Results
-								</div>
-							</div>
+						</div>
 							<div style={{
 								background: "var(--bg-glass)",
 								padding: "1rem",
@@ -586,8 +583,11 @@ const AdminDashboard = ({ token }) => {
 								textAlign: "center"
 							}}>
 								<div style={{ fontSize: "1.5rem", fontWeight: "bold", color: "var(--primary-color)" }}>
-									{databaseData.statistics.averageResultsPerUser}
+									<>
+		{databaseData.statistics.averageResultsPerUser}
 								</div>
+							</div>
+							</div>
 								<div style={{ color: "var(--text-secondary)", fontSize: "0.875rem" }}>
 									Avg Results/User
 								</div>
