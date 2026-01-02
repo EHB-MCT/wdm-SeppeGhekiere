@@ -3,7 +3,7 @@
   "quizzes": [
     {
       "id": "personality-test",
-      "title": "General Personality Test",
+      "title": "Advanced Personality Assessment",
       "questions": [
         {
           "question": "A stranger on the street asks you for money for a bus ticket. They seem distressed. What do you do?",
@@ -11,20 +11,20 @@
             "optionA": "Give them the money without asking too many questions.",
             "optionB": "Politely refuse, as you are skeptical of their story."
           },
-          "weights": {
-            "optionA": {"naive": 1, "influenced": 1},
-            "optionB": {"skeptical": 1}
+          "scores": {
+            "optionA": {"extroversion": 2, "agreeableness": 3, "neuroticism": 1, "conscientiousness": -1, "openness": 0, "dominance": -2, "analytical": -2, "creative": 0},
+            "optionB": {"extroversion": -1, "agreeableness": -2, "neuroticism": 0, "conscientiousness": 2, "openness": 0, "dominance": 1, "analytical": 3, "creative": 0}
           }
         },
-        {
+{
           "question": "You see a social media post with a shocking headline from a source you've never heard of. What's your first reaction?",
           "choices": {
             "optionA": "Share it immediately; people need to know!",
             "optionB": "Look for other sources to verify the information before sharing."
           },
-          "weights": {
-            "optionA": {"naive": 1, "influenced": 1},
-            "optionB": {"skeptical": 1}
+          "scores": {
+            "optionA": {"extroversion": 1, "agreeableness": 2, "neuroticism": 2, "conscientiousness": -3, "openness": 0, "dominance": 0, "analytical": -3, "creative": -1},
+            "optionB": {"extroversion": 0, "agreeableness": 0, "neuroticism": -1, "conscientiousness": 3, "openness": 1, "dominance": 0, "analytical": 3, "creative": 0}
           }
         },
         {
@@ -33,16 +33,16 @@
             "optionA": "Find a quiet corner and observe the room.",
             "optionB": "Introduce yourself to new people and strike up conversations."
           },
-          "weights": {
-            "optionA": {"introvert": 1, "shy": 1},
-            "optionB": {"expressive": 1, "extrovert": 1}
+          "scores": {
+            "optionA": {"extroversion": -4, "agreeableness": -1, "neuroticism": 1, "conscientiousness": 0, "openness": 1, "dominance": -3, "analytical": 2, "creative": 0},
+            "optionB": {"extroversion": 4, "agreeableness": 2, "neuroticism": -1, "conscientiousness": 1, "openness": 2, "dominance": 3, "analytical": -1, "creative": 2}
           }
         }
       ]
     },
-    {
+{
       "id": "social-media-savvy",
-      "title": "Social Media Savvy",
+      "title": "Digital Behavior & Communication Style",
       "questions": [
         {
           "question": "When you have a strong opinion on a topic, you usually...",
@@ -50,9 +50,9 @@
             "optionA": "...keep it to yourself unless asked directly.",
             "optionB": "...enjoy expressing your viewpoint in a discussion."
           },
-          "weights": {
-            "optionA": {"introvert": 1, "shy": 1},
-            "optionB": {"expressive": 1}
+          "scores": {
+            "optionA": {"extroversion": -3, "agreeableness": 1, "neuroticism": 1, "conscientiousness": 2, "openness": -1, "dominance": -2, "analytical": 1, "creative": -1},
+            "optionB": {"extroversion": 3, "agreeableness": 0, "neuroticism": -1, "conscientiousness": 0, "openness": 2, "dominance": 2, "analytical": 0, "creative": 1}
           }
         },
         {
@@ -61,9 +61,9 @@
             "optionA": "The familiar favorite. You know you'll enjoy it.",
             "optionB": "The new dish. You're curious to experience something different."
           },
-          "weights": {
-            "optionA": {"cautious": 1},
-            "optionB": {"adventurous": 1}
+          "scores": {
+            "optionA": {"extroversion": -1, "agreeableness": 0, "neuroticism": -2, "conscientiousness": 2, "openness": -3, "dominance": 0, "analytical": 1, "creative": -2},
+            "optionB": {"extroversion": 1, "agreeableness": 1, "neuroticism": 2, "conscientiousness": -1, "openness": 3, "dominance": 1, "analytical": 0, "creative": 3}
           }
         },
         {
@@ -72,16 +72,16 @@
             "optionA": "...have a detailed itinerary with every day planned out.",
             "optionB": "...have a general idea of where you're going but leave room for spontaneity."
           },
-          "weights": {
-            "optionA": {"planner": 1},
-            "optionB": {"spontaneous": 1}
+          "scores": {
+            "optionA": {"extroversion": -1, "agreeableness": 0, "neuroticism": -2, "conscientiousness": 4, "openness": -2, "dominance": 0, "analytical": 3, "creative": -1},
+            "optionB": {"extroversion": 1, "agreeableness": 1, "neuroticism": 2, "conscientiousness": -2, "openness": 3, "dominance": 1, "analytical": -2, "creative": 2}
           }
         }
       ]
     },
-    {
+{
       "id": "introvert-extrovert",
-      "title": "Are You an Introvert or Extrovert?",
+      "title": "Social Style & Team Dynamics",
       "questions": [
         {
           "question": "You're working on a group project. Your role is usually...",
@@ -89,9 +89,9 @@
             "optionA": "...the leader, organizing the tasks and keeping everyone on track.",
             "optionB": "...a contributor, focusing on your assigned tasks and supporting the leader."
           },
-          "weights": {
-            "optionA": {"leader": 1},
-            "optionB": {"team_player": 1}
+          "scores": {
+            "optionA": {"extroversion": 2, "agreeableness": 0, "neuroticism": -1, "conscientiousness": 3, "openness": 1, "dominance": 4, "analytical": 2, "creative": 1},
+            "optionB": {"extroversion": -1, "agreeableness": 3, "neuroticism": 0, "conscientiousness": 2, "openness": 1, "dominance": -2, "analytical": 1, "creative": 1}
           }
         },
         {
@@ -100,9 +100,9 @@
             "optionA": "...break it down into smaller, manageable steps.",
             "optionB": "...look at the big picture and brainstorm creative solutions."
           },
-          "weights": {
-            "optionA": {"analytical": 1},
-            "optionB": {"creative": 1}
+          "scores": {
+            "optionA": {"extroversion": 0, "agreeableness": 1, "neuroticism": -1, "conscientiousness": 3, "openness": -1, "dominance": 1, "analytical": 4, "creative": -2},
+            "optionB": {"extroversion": 1, "agreeableness": 2, "neuroticism": 1, "conscientiousness": 0, "openness": 3, "dominance": 2, "analytical": -2, "creative": 4}
           }
         },
         {
@@ -111,9 +111,9 @@
             "optionA": "...try to fix it quietly before anyone notices.",
             "optionB": "...own up to it immediately and ask for help if needed."
           },
-          "weights": {
-            "optionA": {"shy": 1, "cautious": 1},
-            "optionB": {"responsible": 1}
+          "scores": {
+            "optionA": {"extroversion": -2, "agreeableness": 0, "neuroticism": 3, "conscientiousness": 2, "openness": -1, "dominance": -2, "analytical": 2, "creative": -1},
+            "optionB": {"extroversion": 1, "agreeableness": 3, "neuroticism": -2, "conscientiousness": 3, "openness": 2, "dominance": 1, "analytical": 1, "creative": 1}
           }
         },
         {
@@ -122,9 +122,9 @@
             "optionA": "...arrive early and help the host prepare.",
             "optionB": "...fashionably late when the party is in full swing."
           },
-          "weights": {
-            "optionA": {"responsible": 1, "helper": 1},
-            "optionB": {"expressive": 1, "social": 1}
+          "scores": {
+            "optionA": {"extroversion": -1, "agreeableness": 3, "neuroticism": -2, "conscientiousness": 4, "openness": 1, "dominance": 0, "analytical": 2, "creative": 0},
+            "optionB": {"extroversion": 3, "agreeableness": 1, "neuroticism": 1, "conscientiousness": -2, "openness": 3, "dominance": 2, "analytical": -1, "creative": 2}
           }
         },
         {
@@ -133,9 +133,9 @@
             "optionA": "...listen quietly and smile.",
             "optionB": "...get excited and celebrate with them."
           },
-          "weights": {
-            "optionA": {"introvert": 1, "calm": 1},
-            "optionB": {"expressive": 1, "empathetic": 1}
+          "scores": {
+            "optionA": {"extroversion": -3, "agreeableness": 2, "neuroticism": -1, "conscientiousness": 1, "openness": 0, "dominance": -2, "analytical": 1, "creative": 0},
+            "optionB": {"extroversion": 4, "agreeableness": 3, "neuroticism": -1, "conscientiousness": 0, "openness": 2, "dominance": 2, "analytical": -1, "creative": 1}
           }
         },
         {
@@ -144,9 +144,9 @@
             "optionA": "...make you think deeply about complex themes.",
             "optionB": "...are action-packed and keep you on the edge of your seat."
           },
-          "weights": {
-            "optionA": {"analytical": 1, "introspective": 1},
-            "optionB": {"adventurous": 1, "stimulus_seeking": 1}
+          "scores": {
+            "optionA": {"extroversion": -2, "agreeableness": 0, "neuroticism": -1, "conscientiousness": 2, "openness": 2, "dominance": 0, "analytical": 4, "creative": 1},
+            "optionB": {"extroversion": 2, "agreeableness": -1, "neuroticism": 2, "conscientiousness": -1, "openness": 1, "dominance": 1, "analytical": -2, "creative": 2}
           }
         },
         {
@@ -155,9 +155,9 @@
             "optionA": "...create a schedule with activities.",
             "optionB": "...see how you feel and decide spontaneously."
           },
-          "weights": {
-            "optionA": {"planner": 1, "organized": 1},
-            "optionB": {"spontaneous": 1, "flexible": 1}
+          "scores": {
+            "optionA": {"extroversion": -1, "agreeableness": 0, "neuroticism": -2, "conscientiousness": 4, "openness": -1, "dominance": 1, "analytical": 3, "creative": -1},
+            "optionB": {"extroversion": 1, "agreeableness": 1, "neuroticism": 2, "conscientiousness": -2, "openness": 3, "dominance": 0, "analytical": -1, "creative": 2}
           }
         },
         {
@@ -166,9 +166,9 @@
             "optionA": "...facts and logical arguments.",
             "optionB": "...emotional impact and personal stories."
           },
-          "weights": {
-            "optionA": {"analytical": 1, "logical": 1},
-            "optionB": {"emotional": 1, "empathetic": 1}
+          "scores": {
+            "optionA": {"extroversion": 0, "agreeableness": -1, "neuroticism": -2, "conscientiousness": 2, "openness": 1, "dominance": 1, "analytical": 4, "creative": -2},
+            "optionB": {"extroversion": 1, "agreeableness": 3, "neuroticism": 2, "conscientiousness": 0, "openness": 3, "dominance": 1, "analytical": -3, "creative": 3}
           }
         },
         {
@@ -177,9 +177,9 @@
             "optionA": "...studying alone in a quiet environment.",
             "optionB": "...discussing ideas with others."
           },
-          "weights": {
-            "optionA": {"introvert": 1, "independent": 1},
-            "optionB": {"extrovert": 1, "social_learner": 1}
+          "scores": {
+            "optionA": {"extroversion": -4, "agreeableness": 0, "neuroticism": -1, "conscientiousness": 2, "openness": 1, "dominance": -1, "analytical": 3, "creative": 1},
+            "optionB": {"extroversion": 4, "agreeableness": 2, "neuroticism": 0, "conscientiousness": 1, "openness": 2, "dominance": 2, "analytical": -1, "creative": 2}
           }
         }
       ]
