@@ -44,6 +44,7 @@ function QuizResult({ userAnswers, quiz }) {
 					"Content-Type": "application/json",
 					"Authorization": `Bearer ${token}`,
 				},
+<<<<<<< Updated upstream
 				body: JSON.stringify({
 					quizId: quiz.id,
 					dominantTrait: dominantTrait,
@@ -58,13 +59,33 @@ function QuizResult({ userAnswers, quiz }) {
 			}
 		} catch (error) {
 			console.error("Error submitting results:", error);
+=======
+				body: JSON.stringify({ answers: userAnswers, quizType }),
+			});
+
+			if (response.status === 401) {
+				setError("Your session has expired. Please log in again.");
+				return;
+			}
+
+			const data = await response.json();
+			setDominantTrait(data.dominantTrait);
+		} catch (error) {
+			console.error("Error submitting quiz results:", error);
+			setError("Failed to get results. Please try again.");
+>>>>>>> Stashed changes
 		} finally {
 			setLoading(false);
 		}
 	};
 
-	return (
+	useEffect(() => {
+		submitResults();
+	}, []);
+
+return (
 		<div className="result-card">
+<<<<<<< Updated upstream
 			{!dominantTrait ? (
 				<div className="loader"></div>
 			) : !resultSubmitted ? (
@@ -108,6 +129,27 @@ function QuizResult({ userAnswers, quiz }) {
 								</div>
 							))}
 						</div>
+=======
+			{loading ? (
+				<>
+					<h2>🎯 Quiz Complete!</h2>
+					<p style={{ fontSize: '1.125rem', marginBottom: '2rem' }}>
+						Analyzing your answers...
+					</p>
+					<div className="loader"></div>
+				</>
+			) : error ? (
+				<>
+					<h2>❌ Error</h2>
+					<p style={{ color: 'var(--error-color)', marginBottom: '2rem' }}>{error}</p>
+					<div style={{ marginTop: '2rem' }}>
+						<button
+							className="btn btn-secondary"
+							onClick={() => window.location.reload()}
+						>
+							🔄 Try Again
+						</button>
+>>>>>>> Stashed changes
 					</div>
 
 					<button
@@ -121,13 +163,21 @@ function QuizResult({ userAnswers, quiz }) {
 				</>
 			) : (
 				<>
+<<<<<<< Updated upstream
 					<h2>✨ Your Personality Type</h2>
 					<div className="dominant-trait">
 						{dominantTrait.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
 					</div>
+=======
+					<h2>✨ Your Results</h2>
+					<div className="dominant-trait">{dominantTrait}</div>
+>>>>>>> Stashed changes
 					<p className="trait-description">
-						Based on your answers, this is your dominant personality trait.
-						Each trait represents different ways of thinking and approaching life.
+						Based on your answers, this is your dominant trait.
+						{quizType === "personality" && " Each trait represents different ways of thinking and approaching life."}
+						{quizType === "intelligence" && " This reflects your primary type of intelligence according to Gardner's theory."}
+						{quizType === "learning" && " This is your preferred learning style that works best for you."}
+						{quizType === "career" && " This indicates your work style and career preferences."}
 					</p>
 					
 					<div style={{
@@ -174,7 +224,11 @@ function QuizResult({ userAnswers, quiz }) {
 						</button>
 					</div>
 				</>
+<<<<<<< Updated upstream
 			)}
+=======
+			) : null}
+>>>>>>> Stashed changes
 		</div>
 	);
 }

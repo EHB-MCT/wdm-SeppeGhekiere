@@ -241,6 +241,7 @@ app.delete("/api/admin/users/:email", authenticateToken, isAdmin, async (req, re
 	}
 });
 
+<<<<<<< Updated upstream
 // Get all database data (for debugging/admin purposes)
 app.get("/api/admin/database", authenticateToken, isAdmin, async (req, res) => {
 	try {
@@ -307,6 +308,65 @@ app.get("/api/admin/stats", authenticateToken, isAdmin, async (req, res) => {
 app.listen(port, () => {
 	console.log(`Backend server listening at http://localhost:${port}`);
 });
+=======
+// Submit quiz result for different quiz types
+app.post("/api/submit-quiz-result", authenticateToken, async (req, res) => {
+	try {
+		const { answers, quizType } = req.body;
+		const email = req.user.email;
+		
+		// Load the appropriate quiz data
+		let quizDataPath;
+		switch(quizType) {
+			case "intelligence":
+				quizDataPath = path.join(__dirname, "quizData2.json");
+				break;
+			case "learning":
+				quizDataPath = path.join(__dirname, "quizData3.json");
+				break;
+			case "career":
+				quizDataPath = path.join(__dirname, "quizData4.json");
+				break;
+			default:
+				quizDataPath = path.join(__dirname, "quizData.json");
+		}
+		
+		const quizData = JSON.parse(fs.readFileSync(quizDataPath, 'utf8'));
+		
+		// Calculate dominant trait
+		const traitCounts = {};
+		answers.forEach(answer => {
+			const trait = answer.trait;
+			if (trait) {
+				traitCounts[trait] = (traitCounts[trait] || 0) + 1;
+			}
+		});
+		
+		let dominantTrait = "";
+		let maxCount = 0;
+		for (const trait in traitCounts) {
+			if (traitCounts[trait] > maxCount) {
+				maxCount = traitCounts[trait];
+				dominantTrait = trait;
+			}
+		}
+		
+		// Save to database
+		await resultsCollection.insertOne({
+			email,
+			quizType,
+			answers,
+			dominantTrait,
+			timestamp: new Date()
+		});
+		
+		res.json({ dominantTrait });
+	} catch (error) {
+		console.error("Error submitting quiz result:", error);
+		res.status(500).json({ error: "Failed to submit quiz result" });
+	}
+});
+>>>>>>> Stashed changes
 
 app.listen(port, () => {
 	console.log(`Backend server listening at http://localhost:${port}`);

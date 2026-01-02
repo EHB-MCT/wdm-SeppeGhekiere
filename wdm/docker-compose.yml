@@ -16,6 +16,10 @@ services:
     build: ./backend
     ports:
       - "3000:3000"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    command: npm start
     environment:
       - NODE_ENV=development
       - MONGO_URI=mongodb://mongo:27017/quizdb
