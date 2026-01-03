@@ -7,7 +7,7 @@ const bcrypt = require("bcryptjs");
 require("dotenv").config();
 const app = express();
 const port = 3000;
-const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/quizdb";
+const MONGO_URI = process.env.MONGODB_URI || "mongodb://mongo:27017/quizdb";
 const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey";
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "admin@test.com";
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin123";
@@ -142,10 +142,10 @@ app.post("/api/submit-result-with-email", authenticateToken, async (req, res) =>
 	}
 });
 
-// Admin middleware - check if user is admin (for demo, using email check)
+// Admin middleware - check if user is admin
 const isAdmin = (req, res, next) => {
 	const email = req.user?.email;
-	if (!email || !email.includes('admin')) {
+	if (!email || email !== ADMIN_EMAIL) {
 		return res.status(403).json({ error: "Admin access required" });
 	}
 	next();

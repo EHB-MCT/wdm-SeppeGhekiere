@@ -21,9 +21,22 @@ const AdminDashboard = ({ token }) => {
 	const COLORS = ["#6366f1", "#06b6d4", "#ec4899", "#10b981", "#f59e0b"];
 
 	useEffect(() => {
-		fetchAnalytics();
-		fetchUsers();
-		fetchDatabaseData();
+		const fetchAllData = async () => {
+			setLoading(true);
+			try {
+				await Promise.all([
+					fetchAnalytics(),
+					fetchUsers(),
+					fetchDatabaseData()
+				]);
+			} catch (error) {
+				console.error('Error fetching admin data:', error);
+			} finally {
+				setLoading(false);
+			}
+		};
+
+		fetchAllData();
 	}, []);
 
 	const fetchAnalytics = async () => {

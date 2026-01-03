@@ -9,10 +9,11 @@ export const useAuth = () => {
 		const token = localStorage.getItem('token');
 		const userData = localStorage.getItem('user');
 		
-		if (token && userData) {
+if (token && userData) {
 			try {
 				const parsedUser = JSON.parse(userData);
-				setUser(parsedUser);
+				const userWithToken = { ...parsedUser, token: token };
+				setUser(userWithToken);
 				setIsAuthenticated(true);
 			} catch (error) {
 				console.error('Error parsing user data:', error);
@@ -34,17 +35,18 @@ export const useAuth = () => {
 				body: JSON.stringify({ email, password }),
 			});
 
-		if (!response.ok) {
+if (!response.ok) {
 			const errorData = await response.json();
 			throw new Error(errorData.error || 'Login failed');
 		}
 
-			const data = await response.json();
-			
-			setUser(data.user);
-			setIsAuthenticated(true);
-			localStorage.setItem('token', data.token);
-			localStorage.setItem('user', JSON.stringify(data.user));
+		const data = await response.json();
+		
+		const userWithToken = { ...data.user, token: data.token };
+		setUser(userWithToken);
+		setIsAuthenticated(true);
+		localStorage.setItem('token', data.token);
+		localStorage.setItem('user', JSON.stringify(userWithToken));
 			
 			return { success: true };
 		} catch (error) {
@@ -68,12 +70,13 @@ export const useAuth = () => {
 			throw new Error(errorData.error || 'Signup failed');
 		}
 
-			const data = await response.json();
+const data = await response.json();
 			
-			setUser(data.user);
+			const userWithToken = { ...data.user, token: data.token };
+			setUser(userWithToken);
 			setIsAuthenticated(true);
 			localStorage.setItem('token', data.token);
-			localStorage.setItem('user', JSON.stringify(data.user));
+			localStorage.setItem('user', JSON.stringify(userWithToken));
 			
 			return { success: true };
 		} catch (error) {
