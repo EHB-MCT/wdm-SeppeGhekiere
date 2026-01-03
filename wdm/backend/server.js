@@ -7,9 +7,9 @@ const bcrypt = require("bcryptjs");
 require("dotenv").config();
 const app = express();
 const port = 3000;
-const MONGO_URI = process.env.MONGODB_URI || "mongodb://mongo:27017/quizdb";
+const MONGO_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/quizdb";
 const JWT_SECRET = process.env.JWT_SECRET || "supersecretkey";
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "admin@test.com";
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "admin@user.com";
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin123";
 
 // MongoDB setup
@@ -261,6 +261,200 @@ app.delete("/api/admin/users/:email", authenticateToken, isAdmin, async (req, re
 		res.status(500).json({ error: "Failed to delete user" });
 	}
 });
+
+// Get detailed user profile with advanced analysis
+app.get("/api/admin/profile/:email", authenticateToken, isAdmin, async (req, res) => {
+	console.log("Profile endpoint called for:", req.params.email);
+	try {
+		const email = req.params.email;
+		
+		// Get user info and their quiz results
+		const user = await usersCollection.findOne({ email }, { projection: { password: 0 } });
+		if (!user) {
+			return res.status(404).json({ error: "User not found" });
+		}
+		
+		const userResults = await resultsCollection.find({ email }).toArray();
+		
+		if (userResults.length === 0) {
+			return res.status(404).json({ error: "No quiz results found for this user" });
+		}
+		
+		// Calculate advanced personality profile
+		const personalityProfile = calculateAdvancedProfile(userResults);
+		
+		// Get quiz history
+		const quizHistory = userResults.map(result => ({
+			quizType: result.quizId,
+			personalityType: result.dominantTrait,
+			timestamp: result.timestamp,
+			score: result.score
+		})).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+		
+		// Generate behavioral predictions
+		const predictions = generateBehavioralPredictions(personalityProfile);
+		
+		res.json({
+			email: user.email,
+			profile: personalityProfile,
+			predictions: predictions,
+			quizHistory: quizHistory,
+			totalQuizzes: userResults.length
+		});
+		
+	} catch (err) {
+		console.error("Error generating profile:", err);
+		res.status(500).json({ error: "Failed to generate profile" });
+	}
+});
+
+// Helper function to calculate advanced personality profile
+function calculateAdvancedProfile(results) {
+	// Initialize trait scores
+	const traitScores = {
+		extroversion: 0,
+		analytical: 0,
+		creative: 0,
+		conscientiousness: 0,
+		dominance: 0,
+		agreeableness: 0,
+		openness: 0,
+		neuroticism: 0
+	};
+	
+	// Calculate scores based on quiz results and personality types
+	results.forEach(result => {
+		const personalityType = result.dominantTrait;
+		const score = result.score || 85; // Default score if not provided
+		
+		// Map personality types to trait scores
+		switch(personalityType) {
+			case 'Analytical':
+				traitScores.analytical += score;
+				traitScores.conscientiousness += score * 0.7;
+				traitScores.openness += score * 0.6;
+				traitScores.extroversion -= score * 0.2;
+				break;
+			case 'Creative':
+				traitScores.creative += score;
+				traitScores.openness += score * 0.8;
+				traitScores.extroversion += score * 0.3;
+				traitScores.analytical -= score * 0.1;
+				break;
+			case 'Social':
+				traitScores.extroversion += score;
+				traitScores.agreeableness += score * 0.8;
+				traitScores.dominance += score * 0.4;
+				traitScores.neuroticism -= score * 0.2;
+				break;
+			case 'Practical':
+				traitScores.conscientiousness += score;
+				traitScores.analytical += score * 0.6;
+				traitScores.openness -= score * 0.2;
+				traitScores.creative -= score * 0.1;
+				break;
+			case 'Adventurous':
+				traitScores.openness += score;
+				traitScores.extroversion += score * 0.6;
+				traitScores.dominance += score * 0.5;
+				traitScores.neuroticism += score * 0.3;
+				break;
+			case 'Organized':
+				traitScores.conscientiousness += score;
+				traitScores.analytical += score * 0.5;
+				traitScores.dominance += score * 0.3;
+				traitScores.openness -= score * 0.3;
+				break;
+		}
+	});
+	
+	// Normalize scores to 0-100 scale
+	const numResults = results.length;
+	Object.keys(traitScores).forEach(trait => {
+		traitScores[trait] = Math.max(0, Math.min(100, 
+			50 + (traitScores[trait] / (numResults * 100)) * 50
+		));
+	});
+	
+	// Determine dominant trait
+	const dominantTrait = Object.entries(traitScores)
+		.sort(([,a], [,b]) => b - a)[0][0];
+	
+	// Determine personality type based on dominant trait and scores
+	const personalityType = getPersonalityType(traitScores, dominantTrait);
+	
+	return {
+		traits: traitScores,
+		dominantTrait: dominantTrait,
+		personalityType: personalityType,
+		confidence: Math.min(95, 60 + (numResults * 5)), // Confidence based on number of results
+		lastUpdated: new Date().toISOString()
+	};
+}
+
+// Helper function to determine personality type
+function getPersonalityType(traitScores, dominantTrait) {
+	const { extroversion, analytical, creative, conscientiousness, 
+		dominance, agreeableness, openness, neuroticism } = traitScores;
+	
+	// Complex personality type mapping
+	if (analytical > 70 && conscientiousness > 65) return "The Analyst";
+	if (creative > 70 && openness > 70) return "The Innovator";
+	if (extroversion > 70 && agreeableness > 65) return "The Connector";
+	if (dominance > 70 && conscientiousness > 65) return "The Leader";
+	if (openness > 70 && extroversion > 60) return "The Explorer";
+	if (conscientiousness > 75) return "The Organizer";
+	if (agreeableness > 75 && extroversion > 60) return "The Harmonizer";
+	
+	// Mixed types
+	if (analytical > 60 && creative > 60) return "The Creative Thinker";
+	if (extroversion > 60 && dominance > 60) return "The Social Leader";
+	if (conscientiousness > 60 && agreeableness > 60) return "The Reliable Collaborator";
+	
+	// Default types based on dominant trait
+	switch(dominantTrait) {
+		case 'extroversion': return "The Social Butterfly";
+		case 'analytical': return "The Thinker";
+		case 'creative': return "The Artist";
+		case 'conscientiousness': return "The Planner";
+		case 'dominance': return "The Director";
+		case 'agreeableness': return "The Supporter";
+		case 'openness': return "The Adventurer";
+		case 'neuroticism': return "The Sensitive Soul";
+		default: return "The Balanced Individual";
+	}
+}
+
+// Helper function to generate behavioral predictions
+function generateBehavioralPredictions(profile) {
+	const { traits } = profile;
+	
+	const decisionMaking = traits.analytical > 70 ? "Data-driven and logical" :
+		traits.creative > 70 ? "Intuitive and innovative" :
+		traits.extroversion > 70 ? "Collaborative and consultative" :
+		"Balanced and adaptable";
+	
+	const learningStyle = traits.analytical > 65 ? "Structured and theoretical" :
+		traits.creative > 65 ? "Visual and experiential" :
+		traits.extroversion > 65 ? "Interactive and social" :
+		"Independent and practical";
+	
+	const socialTendency = traits.extroversion > 70 ? "Highly social, energized by groups" :
+		traits.extroversion < 40 ? "Reserved, prefers small groups" :
+		"Moderately social, adaptable to situations";
+	
+	const workStyle = traits.conscientiousness > 70 ? "Methodical and detail-oriented" :
+		traits.creative > 70 ? "Innovative and flexible" :
+		traits.dominance > 70 ? "Leadership-driven and decisive" :
+		"Collaborative and steady";
+	
+	return {
+		decisionMaking,
+		learningStyle,
+		socialTendency,
+		workStyle
+	};
+}
 
 // Get all database data (for debugging/admin purposes)
 app.get("/api/admin/database", authenticateToken, isAdmin, async (req, res) => {
