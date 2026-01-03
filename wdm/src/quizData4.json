@@ -1,0 +1,341 @@
+{
+  "quizzes": [
+    {
+      "id": "leadership-style",
+      "title": "What's Your Leadership Style?",
+      "questions": [
+        {
+          "question": "When leading a team, you prefer to...",
+          "choices": {
+            "optionA": "...set clear expectations and let people work independently.",
+            "optionB": "...work closely with team members and provide constant guidance."
+          },
+          "weights": {
+            "optionA": {"delegative": 1, "trusting": 1},
+            "optionB": {"hands_on": 1, "supportive": 1}
+          }
+        },
+        {
+          "question": "When making decisions for the team, you...",
+          "choices": {
+            "optionA": "...make the final decision after considering input.",
+            "optionB": "...build consensus and decide as a group."
+          },
+          "weights": {
+            "optionA": {"authoritative": 1, "decisive": 1},
+            "optionB": {"democratic": 1, "collaborative": 1}
+          }
+        },
+        {
+          "question": "When a team member makes a mistake, you...",
+          "choices": {
+            "optionA": "...address it directly and create a improvement plan.",
+            "optionB": "...use it as a teaching moment and coach them."
+          },
+          "weights": {
+            "optionA": {"results_oriented": 1, "direct": 1},
+            "optionB": {"developmental": 1, "mentoring": 1}
+          }
+        },
+        {
+          "question": "When leading a meeting, you...",
+          "choices": {
+            "optionA": "...stick strictly to agenda and time limits.",
+            "optionB": "...allow discussion to flow naturally even if off-topic."
+          },
+          "weights": {
+            "optionA": {"structured": 1, "time_oriented": 1},
+            "optionB": {"flexible": 1, "people_oriented": 1}
+          }
+        },
+        {
+          "question": "You motivate others by...",
+          "choices": {
+            "optionA": "...setting clear goals and tracking progress.",
+            "optionB": "...building relationships and inspiring enthusiasm."
+          },
+          "weights": {
+            "optionA": {"task_oriented": 1, "goal_driven": 1},
+            "optionB": {"relationship_oriented": 1, "inspirational": 1}
+          }
+        },
+        {
+          "question": "When delegating tasks, you...",
+          "choices": {
+            "optionA": "...provide detailed instructions and check progress regularly.",
+            "optionB": "...give autonomy and trust people to deliver results."
+          },
+          "weights": {
+            "optionA": {"micromanager": 1, "controlling": 1},
+            "optionB": {"empowering": 1, "trusting": 1}
+          }
+        },
+        {
+          "question": "You handle team disagreements by...",
+          "choices": {
+            "optionA": "...making the final decision yourself.",
+            "optionB": "...facilitating discussion until consensus is reached."
+          },
+          "weights": {
+            "optionA": {"authoritative": 1, "decisive": 1},
+            "optionB": {"democratic": 1, "collaborative": 1}
+          }
+        },
+        {
+          "question": "You prioritize...",
+          "choices": {
+            "optionA": "...efficiency and getting things done quickly.",
+            "optionB": "...quality and taking time to get it right."
+          },
+          "weights": {
+            "optionA": {"results_oriented": 1, "efficient": 1},
+            "optionB": {"perfectionist": 1, "quality_focused": 1}
+          }
+        },
+        {
+          "question": "When managing multiple projects, you...",
+          "choices": {
+            "optionA": "...use digital tools and apps to track everything.",
+            "optionB": "...rely on memory and simple to-do lists."
+          },
+          "weights": {
+            "optionA": {"tech_savvy": 1, "systematic": 1},
+            "optionB": {"traditional": 1, "minimalist": 1}
+          }
+        },
+        {
+          "question": "You approach deadlines with...",
+          "choices": {
+            "optionA": "...steady progress throughout the timeline.",
+            "optionB": "...intense focus as the deadline approaches."
+          },
+          "weights": {
+            "optionA": {"consistent": 1, "planner": 1},
+            "optionB": {"pressure_performer": 1, "adrenaline_driven": 1}
+          }
+        },
+        {
+          "question": "In difficult conversations, you...",
+          "choices": {
+            "optionA": "...get straight to the point without small talk.",
+            "optionB": "...build rapport before addressing the issue."
+          },
+          "weights": {
+            "optionA": {"direct": 1, "efficient": 1},
+            "optionB": {"diplomatic": 1, "relationship_focused": 1}
+          }
+        }
+      ]
+    },
+    {
+      "id": "time-management",
+      "title": "How Do You Manage Your Time?",
+      "questions": [
+        {
+          "question": "You organize your day by...",
+          "choices": {
+            "optionA": "...creating a detailed schedule with time blocks.",
+            "optionB": "...keeping a flexible to-do list and adapting as needed."
+          },
+          "weights": {
+            "optionA": {"structured": 1, "disciplined": 1},
+            "optionB": {"flexible": 1, "adaptive": 1}
+          }
+        },
+        {
+          "question": "When you have multiple tasks, you...",
+          "choices": {
+            "optionA": "...tackle them in order of importance and deadlines.",
+            "optionB": "...start with whatever you feel most motivated to do."
+          },
+          "weights": {
+            "optionA": {"prioritized": 1, "logical": 1},
+            "optionB": {"intuitive": 1, "motivation_driven": 1}
+          }
+        },
+        {
+          "question": "You handle interruptions by...",
+          "choices": {
+            "optionA": "...setting boundaries and protecting your focus time.",
+            "optionB": "...being available and helping others when needed."
+          },
+          "weights": {
+            "optionA": {"focused": 1, "boundary_setting": 1},
+            "optionB": {"responsive": 1, "helpful": 1}
+          }
+        },
+        {
+          "question": "You prefer to work in...",
+          "choices": {
+            "optionA": "...long, uninterrupted blocks of time.",
+            "optionB": "...short bursts with frequent breaks."
+          },
+          "weights": {
+            "optionA": {"deep_work": 1, "focused": 1},
+            "optionB": {"pomodoro": 1, "break_friendly": 1}
+          }
+        },
+        {
+          "question": "When planning your week, you...",
+          "choices": {
+            "optionA": "...schedule every hour and activity.",
+            "optionB": "...set broad goals and fill in details as you go."
+          },
+          "weights": {
+            "optionA": {"detailed_planner": 1, "structured": 1},
+            "optionB": {"big_picture": 1, "flexible": 1}
+          }
+        },
+        {
+          "question": "You handle email by...",
+          "choices": {
+            "optionA": "...checking it at specific times throughout the day.",
+            "optionB": "...responding as soon as messages arrive."
+          },
+          "weights": {
+            "optionA": {"batch_processor": 1, "disciplined": 1},
+            "optionB": {"responsive": 1, "real_time": 1}
+          }
+        },
+        {
+          "question": "You feel most productive when...",
+          "choices": {
+            "optionA": "...working during your peak energy hours.",
+            "optionB": "...maintaining a consistent schedule regardless of energy."
+          },
+          "weights": {
+            "optionA": {"energy_aware": 1, "intuitive": 1},
+            "optionB": {"disciplined": 1, "consistent": 1}
+          }
+        },
+        {
+          "question": "You deal with procrastination by...",
+          "choices": {
+            "optionA": "...breaking tasks into tiny, manageable steps.",
+            "optionB": "...using accountability partners or deadlines."
+          },
+          "weights": {
+            "optionA": {"systematic": 1, "analytical": 1},
+            "optionB": {"social_motivated": 1, "external_pressure": 1}
+          }
+        },
+        {
+          "question": "You organize your digital files by...",
+          "choices": {
+            "optionA": "...creating detailed folder structures and naming conventions.",
+            "optionB": "...using search and keeping everything in one place."
+          },
+          "weights": {
+            "optionA": {"organized": 1, "systematic": 1},
+            "optionB": {"minimalist": 1, "search_reliant": 1}
+          }
+        }
+      ]
+    },
+    {
+      "id": "conflict-resolution",
+      "title": "How Do You Handle Conflict?",
+      "questions": [
+        {
+          "question": "When disagreement arises, you...",
+          "choices": {
+            "optionA": "...address it directly and work toward a solution.",
+            "optionB": "...take time to cool off before discussing it."
+          },
+          "weights": {
+            "optionA": {"confrontational": 1, "solution_focused": 1},
+            "optionB": {"avoidant": 1, "thoughtful": 1}
+          }
+        },
+        {
+          "question": "In a disagreement, you focus on...",
+          "choices": {
+            "optionA": "...finding the logical solution that works best.",
+            "optionB": "...making sure everyone's feelings are considered."
+          },
+          "weights": {
+            "optionA": {"analytical": 1, "objective": 1},
+            "optionB": {"empathetic": 1, "harmony_seeking": 1}
+          }
+        },
+        {
+          "question": "You believe conflicts are...",
+          "choices": {
+            "optionA": "...opportunities for improvement and growth.",
+            "optionB": "...something to be minimized and avoided."
+          },
+          "weights": {
+            "optionA": {"growth_mindset": 1, "constructive": 1},
+            "optionB": {"peace_seeking": 1, "conflict_averse": 1}
+          }
+        },
+        {
+          "question": "When receiving criticism, you...",
+          "choices": {
+            "optionA": "...analyze it objectively for useful feedback.",
+            "optionB": "...consider the emotional impact first."
+          },
+          "weights": {
+            "optionA": {"analytical": 1, "growth_mindset": 1},
+            "optionB": {"emotional": 1, "empathetic": 1}
+          }
+        },
+        {
+          "question": "You negotiate by...",
+          "choices": {
+            "optionA": "...focusing on facts and logical arguments.",
+            "optionB": "...building relationships and finding common ground."
+          },
+          "weights": {
+            "optionA": {"logical": 1, "fact_based": 1},
+            "optionB": {"relationship_focused": 1, "collaborative": 1}
+          }
+        },
+        {
+          "question": "When someone is upset with you, you...",
+          "choices": {
+            "optionA": "...ask for specific examples to understand the issue.",
+            "optionB": "...listen first and validate their feelings."
+          },
+          "weights": {
+            "optionA": {"problem_solver": 1, "analytical": 1},
+            "optionB": {"empathetic": 1, "supportive": 1}
+          }
+        },
+        {
+          "question": "You handle team conflicts by...",
+          "choices": {
+            "optionA": "...mediating and finding a compromise.",
+            "optionB": "...letting team members resolve it themselves."
+          },
+          "weights": {
+            "optionA": {"mediator": 1, "interventionist": 1},
+            "optionB": {"hands_off": 1, "empowering": 1}
+          }
+        },
+        {
+          "question": "You give feedback by...",
+          "choices": {
+            "optionA": "...being direct and specific about improvements needed.",
+            "optionB": "...sandwiching criticism between positives."
+          },
+          "weights": {
+            "optionA": {"direct": 1, "blunt": 1},
+            "optionB": {"diplomatic": 1, "tactful": 1}
+          }
+        },
+        {
+          "question": "When tensions are high, you...",
+          "choices": {
+            "optionA": "...suggest taking a break and revisiting later.",
+            "optionB": "...push through to reach resolution quickly."
+          },
+          "weights": {
+            "optionA": {"patient": 1, "de_escalator": 1},
+            "optionB": {"urgent": 1, "resolution_focused": 1}
+          }
+        }
+      ]
+    }
+  ]
+}
