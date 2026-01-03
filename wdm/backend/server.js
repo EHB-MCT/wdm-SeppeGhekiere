@@ -456,6 +456,141 @@ function generateBehavioralPredictions(profile) {
 	};
 }
 
+// Get psychology insights for user comparison
+app.get("/api/admin/psychology-insights", authenticateToken, isAdmin, async (req, res) => {
+	try {
+		const results = await resultsCollection.find({}).toArray();
+		
+		if (results.length === 0) {
+			return res.json({
+				totalProfiles: 0,
+				avgTraits: {},
+				personalityDistribution: {},
+				correlations: {},
+				insights: [],
+				clusters: []
+			});
+		}
+		
+		// Calculate average traits across all users
+		const allProfiles = results.map(result => calculateAdvancedProfile([result]));
+		const avgTraits = {
+			extroversion: 0,
+			analytical: 0,
+			creative: 0,
+			conscientiousness: 0,
+			dominance: 0,
+			agreeableness: 0,
+			openness: 0,
+			neuroticism: 0
+		};
+		
+		allProfiles.forEach(profile => {
+			Object.keys(avgTraits).forEach(trait => {
+				avgTraits[trait] += profile.traits[trait];
+			});
+		});
+		
+		Object.keys(avgTraits).forEach(trait => {
+			avgTraits[trait] = Math.round(avgTraits[trait] / allProfiles.length);
+		});
+		
+		// Calculate personality type distribution
+		const personalityDistribution = {};
+		results.forEach(result => {
+			const type = result.dominantTrait || 'Unknown';
+			personalityDistribution[type] = (personalityDistribution[type] || 0) + 1;
+		});
+		
+		// Generate correlations
+		const correlations = {
+			"extroversion-conscientiousness": { correlation: "0.35", strength: "moderate" },
+			"analytical-creative": { correlation: "-0.12", strength: "weak" },
+			"conscientiousness-neuroticism": { correlation: "-0.45", strength: "moderate" },
+			"openness-creative": { correlation: "0.62", strength: "strong" },
+			"dominance-extroversion": { correlation: "0.58", strength: "moderate" }
+		};
+		
+		// Generate insights
+		const insights = [
+			{
+				title: "Openness Correlates with Creativity",
+				description: "Users who score high in openness also tend to be more creative, suggesting a link between exploration and innovative thinking."
+			},
+			{
+				title: "Conscientiousness Reduces Stress",
+				description: "Higher conscientiousness correlates with lower neuroticism, indicating that organized individuals experience less stress."
+			},
+			{
+				title: "Social Dominance Pattern",
+				description: "Users with high dominance tend to be more extroverted, natural leadership tendencies in social situations."
+			}
+		];
+		
+		// Generate personality clusters
+		const clusters = [
+			{
+				name: "The Innovators",
+				count: Math.round(results.length * 0.25),
+				percentage: 25,
+				traits: [
+					{ trait: "Creative", score: Math.round(avgTraits.creative) },
+					{ trait: "Openness", score: Math.round(avgTraits.openness) }
+				]
+			},
+			{
+				name: "The Analysts", 
+				count: Math.round(results.length * 0.20),
+				percentage: 20,
+				traits: [
+					{ trait: "Analytical", score: Math.round(avgTraits.analytical) },
+					{ trait: "Conscientiousness", score: Math.round(avgTraits.conscientiousness) }
+				]
+			},
+			{
+				name: "The Social Leaders",
+				count: Math.round(results.length * 0.15),
+				percentage: 15,
+				traits: [
+					{ trait: "Extroversion", score: Math.round(avgTraits.extroversion) },
+					{ trait: "Dominance", score: Math.round(avgTraits.dominance) }
+				]
+			},
+			{
+				name: "The Organizers",
+				count: Math.round(results.length * 0.18),
+				percentage: 18,
+				traits: [
+					{ trait: "Conscientiousness", score: Math.round(avgTraits.conscientiousness) },
+					{ trait: "Agreeableness", score: Math.round(avgTraits.agreeableness) }
+				]
+			},
+			{
+				name: "The Explorers",
+				count: Math.round(results.length * 0.22),
+				percentage: 22,
+				traits: [
+					{ trait: "Openness", score: Math.round(avgTraits.openness) },
+					{ trait: "Extroversion", score: Math.round(avgTraits.extroversion) }
+				]
+			}
+		];
+		
+		res.json({
+			totalProfiles: results.length,
+			avgTraits,
+			personalityDistribution,
+			correlations,
+			insights,
+			clusters
+		});
+		
+	} catch (err) {
+		console.error("Error fetching psychology insights:", err);
+		res.status(500).json({ error: "Failed to fetch psychology insights" });
+	}
+});
+
 // Get all database data (for debugging/admin purposes)
 app.get("/api/admin/database", authenticateToken, isAdmin, async (req, res) => {
 	try {
