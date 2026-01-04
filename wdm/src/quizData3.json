@@ -1,0 +1,209 @@
+{
+  "quizzes": [
+    {
+      "id": "stress-management",
+      "title": "How Do You Handle Stress?",
+      "questions": [
+        {
+          "question": "When you're feeling overwhelmed, you typically...",
+          "choices": {
+            "optionA": "...take a break and do something relaxing.",
+            "optionB": "...push through and work harder to catch up."
+          },
+          "weights": {
+            "optionA": {"balanced": 1, "self_care": 1},
+            "optionB": {"driven": 1, "resilient": 1}
+          }
+        },
+        {
+          "question": "When facing a deadline, you...",
+          "choices": {
+            "optionA": "...start early to avoid last-minute pressure.",
+            "optionB": "...work best under pressure and start closer to the deadline."
+          },
+          "weights": {
+            "optionA": {"proactive": 1, "organized": 1},
+            "optionB": {"thrives_under_pressure": 1, "focused": 1}
+          }
+        },
+        {
+          "question": "After a stressful day, you recharge by...",
+          "choices": {
+            "optionA": "...spending quiet time alone reading or meditating.",
+            "optionB": "...talking with friends or being physically active."
+          },
+          "weights": {
+            "optionA": {"introverted_recovery": 1, "mindful": 1},
+            "optionB": {"extroverted_recovery": 1, "active": 1}
+          }
+        },
+        {
+          "question": "When you feel overwhelmed, you...",
+          "choices": {
+            "optionA": "...break tasks into smaller, manageable steps.",
+            "optionB": "...focus on one thing and ignore the rest temporarily."
+          },
+          "weights": {
+            "optionA": {"systematic": 1, "organized": 1},
+            "optionB": {"focused": 1, "prioritizer": 1}
+          }
+        },
+        {
+          "question": "You handle criticism by...",
+          "choices": {
+            "optionA": "...analyzing it objectively for useful feedback.",
+            "optionB": "...taking time to process emotionally before responding."
+          },
+          "weights": {
+            "optionA": {"analytical": 1, "growth_mindset": 1},
+            "optionB": {"emotional": 1, "reflective": 1}
+          }
+        },
+        {
+          "question": "When things don't go as planned, you...",
+          "choices": {
+            "optionA": "...quickly adapt and find alternative solutions.",
+            "optionB": "...take time to process before deciding next steps."
+          },
+          "weights": {
+            "optionA": {"adaptive": 1, "resilient": 1},
+            "optionB": {"thoughtful": 1, "deliberate": 1}
+          }
+        },
+        {
+          "question": "You prefer to deal with problems...",
+          "choices": {
+            "optionA": "...immediately as they arise.",
+            "optionB": "...after you've had time to think about them."
+          },
+          "weights": {
+            "optionA": {"proactive": 1, "decisive": 1},
+            "optionB": {"deliberate": 1, "thoughtful": 1}
+          }
+        },
+        {
+          "question": "When making important life decisions, you...",
+          "choices": {
+            "optionA": "...research extensively and weigh all options.",
+            "optionB": "...trust your intuition and go with your gut feeling."
+          },
+          "weights": {
+            "optionA": {"analytical": 1, "thorough": 1},
+            "optionB": {"intuitive": 1, "decisive": 1}
+          }
+        },
+        {
+          "question": "You feel most energized when...",
+          "choices": {
+            "optionA": "...you have a clear plan and know what to expect.",
+            "optionB": "...you're facing new challenges and unknown situations."
+          },
+          "weights": {
+            "optionA": {"structured": 1, "predictable": 1},
+            "optionB": {"adventurous": 1, "spontaneous": 1}
+          }
+        },
+        {
+          "question": "When working on a team project, you...",
+          "choices": {
+            "optionA": "...prefer to have clearly defined roles and responsibilities.",
+            "optionB": "...enjoy flexible collaboration and shared leadership."
+          },
+          "weights": {
+            "optionA": {"structured": 1, "organized": 1},
+            "optionB": {"flexible": 1, "collaborative": 1}
+          }
+        },
+        {
+          "question": "You approach challenges with...",
+          "choices": {
+            "optionA": "...careful planning and risk assessment.",
+            "optionB": "...optimism and a willingness to learn from mistakes."
+          },
+          "weights": {
+            "optionA": {"cautious": 1, "analytical": 1},
+            "optionB": {"optimistic": 1, "growth_mindset": 1}
+          }
+        }
+      ]
+    },
+    {
+      "id": "decision-making",
+      "title": "What's Your Decision-Making Style?",
+      "questions": [
+        {
+          "question": "When making an important decision, you...",
+          "choices": {
+            "optionA": "...gather lots of data and analyze all options.",
+            "optionB": "...trust your gut feeling and decide quickly."
+          },
+          "weights": {
+            "optionA": {"analytical": 1, "thorough": 1},
+            "optionB": {"intuitive": 1, "decisive": 1}
+          }
+        },
+        {
+          "question": "You prefer to make decisions...",
+          "choices": {
+            "optionA": "...after careful consideration and research.",
+            "optionB": "...collaboratively with input from others."
+          },
+          "weights": {
+            "optionA": {"independent_thinker": 1, "methodical": 1},
+            "optionB": {"collaborative": 1, "social_thinker": 1}
+          }
+        },
+        {
+          "question": "When faced with multiple good options, you...",
+          "choices": {
+            "optionA": "...create a pros and cons list for each.",
+            "optionB": "...go with the one that feels most exciting."
+          },
+          "weights": {
+            "optionA": {"systematic": 1, "logical": 1},
+            "optionB": {"adventurous": 1, "emotional": 1}
+          }
+        }
+      ]
+    },
+    {
+      "id": "creativity-style",
+      "title": "What's Your Creative Style?",
+      "questions": [
+        {
+          "question": "When working on a creative project, you...",
+          "choices": {
+            "optionA": "...follow established techniques and methods.",
+            "optionB": "...experiment with completely new approaches."
+          },
+          "weights": {
+            "optionA": {"structured_creative": 1, "methodical": 1},
+            "optionB": {"innovative": 1, "experimental": 1}
+          }
+        },
+        {
+          "question": "You get your best ideas when...",
+          "choices": {
+            "optionA": "...you're alone in a quiet environment.",
+            "optionB": "...you're brainstorming with others."
+          },
+          "weights": {
+            "optionA": {"solitary_creator": 1, "introspective": 1},
+            "optionB": {"collaborative_creator": 1, "social": 1}
+          }
+        },
+        {
+          "question": "When facing a creative block, you...",
+          "choices": {
+            "optionA": "...take a break and come back with fresh eyes.",
+            "optionB": "...push through and try different approaches immediately."
+          },
+          "weights": {
+            "optionA": {"patient": 1, "reflective": 1},
+            "optionB": {"persistent": 1, "adaptive": 1}
+          }
+        }
+      ]
+    }
+  ]
+}
