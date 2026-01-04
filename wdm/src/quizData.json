@@ -1,0 +1,188 @@
+
+{
+  "quizzes": [
+    {
+      "id": "personality-test",
+      "title": "Advanced Personality Assessment",
+      "questions": [
+        {
+          "question": "A stranger on the street asks you for money for a bus ticket. They seem distressed. What do you do?",
+          "choices": {
+            "optionA": "Give them the money without asking too many questions.",
+            "optionB": "Politely refuse, as you are skeptical of their story."
+          },
+          "scores": {
+            "optionA": {"extroversion": 2, "agreeableness": 3, "neuroticism": 1, "conscientiousness": -1, "openness": 0, "dominance": -2, "analytical": -2, "creative": 0},
+            "optionB": {"extroversion": -1, "agreeableness": -2, "neuroticism": 0, "conscientiousness": 2, "openness": 0, "dominance": 1, "analytical": 3, "creative": 0}
+          }
+        },
+{
+          "question": "You see a social media post with a shocking headline from a source you've never heard of. What's your first reaction?",
+          "choices": {
+            "optionA": "Share it immediately; people need to know!",
+            "optionB": "Look for other sources to verify the information before sharing."
+          },
+          "scores": {
+            "optionA": {"extroversion": 1, "agreeableness": 2, "neuroticism": 2, "conscientiousness": -3, "openness": 0, "dominance": 0, "analytical": -3, "creative": -1},
+            "optionB": {"extroversion": 0, "agreeableness": 0, "neuroticism": -1, "conscientiousness": 3, "openness": 1, "dominance": 0, "analytical": 3, "creative": 0}
+          }
+        },
+        {
+          "question": "You're at a party where you don't know many people. What are you most likely to do?",
+          "choices": {
+            "optionA": "Find a quiet corner and observe the room.",
+            "optionB": "Introduce yourself to new people and strike up conversations."
+          },
+          "scores": {
+            "optionA": {"extroversion": -4, "agreeableness": -1, "neuroticism": 1, "conscientiousness": 0, "openness": 1, "dominance": -3, "analytical": 2, "creative": 0},
+            "optionB": {"extroversion": 4, "agreeableness": 2, "neuroticism": -1, "conscientiousness": 1, "openness": 2, "dominance": 3, "analytical": -1, "creative": 2}
+          }
+        }
+      ]
+    },
+{
+      "id": "social-media-savvy",
+      "title": "Digital Behavior & Communication Style",
+      "questions": [
+        {
+          "question": "When you have a strong opinion on a topic, you usually...",
+          "choices": {
+            "optionA": "...keep it to yourself unless asked directly.",
+            "optionB": "...enjoy expressing your viewpoint in a discussion."
+          },
+          "scores": {
+            "optionA": {"extroversion": -3, "agreeableness": 1, "neuroticism": 1, "conscientiousness": 2, "openness": -1, "dominance": -2, "analytical": 1, "creative": -1},
+            "optionB": {"extroversion": 3, "agreeableness": 0, "neuroticism": -1, "conscientiousness": 0, "openness": 2, "dominance": 2, "analytical": 0, "creative": 1}
+          }
+        },
+        {
+          "question": "You're given a choice between a familiar favorite meal and a new, exotic dish you've never tried. You choose...",
+          "choices": {
+            "optionA": "The familiar favorite. You know you'll enjoy it.",
+            "optionB": "The new dish. You're curious to experience something different."
+          },
+          "scores": {
+            "optionA": {"extroversion": -1, "agreeableness": 0, "neuroticism": -2, "conscientiousness": 2, "openness": -3, "dominance": 0, "analytical": 1, "creative": -2},
+            "optionB": {"extroversion": 1, "agreeableness": 1, "neuroticism": 2, "conscientiousness": -1, "openness": 3, "dominance": 1, "analytical": 0, "creative": 3}
+          }
+        },
+        {
+          "question": "When planning a vacation, you prefer to...",
+          "choices": {
+            "optionA": "...have a detailed itinerary with every day planned out.",
+            "optionB": "...have a general idea of where you're going but leave room for spontaneity."
+          },
+          "scores": {
+            "optionA": {"extroversion": -1, "agreeableness": 0, "neuroticism": -2, "conscientiousness": 4, "openness": -2, "dominance": 0, "analytical": 3, "creative": -1},
+            "optionB": {"extroversion": 1, "agreeableness": 1, "neuroticism": 2, "conscientiousness": -2, "openness": 3, "dominance": 1, "analytical": -2, "creative": 2}
+          }
+        }
+      ]
+    },
+{
+      "id": "introvert-extrovert",
+      "title": "Social Style & Team Dynamics",
+      "questions": [
+        {
+          "question": "You're working on a group project. Your role is usually...",
+          "choices": {
+            "optionA": "...the leader, organizing the tasks and keeping everyone on track.",
+            "optionB": "...a contributor, focusing on your assigned tasks and supporting the leader."
+          },
+          "scores": {
+            "optionA": {"extroversion": 2, "agreeableness": 0, "neuroticism": -1, "conscientiousness": 3, "openness": 1, "dominance": 4, "analytical": 2, "creative": 1},
+            "optionB": {"extroversion": -1, "agreeableness": 3, "neuroticism": 0, "conscientiousness": 2, "openness": 1, "dominance": -2, "analytical": 1, "creative": 1}
+          }
+        },
+        {
+          "question": "When faced with a difficult problem, you tend to...",
+          "choices": {
+            "optionA": "...break it down into smaller, manageable steps.",
+            "optionB": "...look at the big picture and brainstorm creative solutions."
+          },
+          "scores": {
+            "optionA": {"extroversion": 0, "agreeableness": 1, "neuroticism": -1, "conscientiousness": 3, "openness": -1, "dominance": 1, "analytical": 4, "creative": -2},
+            "optionB": {"extroversion": 1, "agreeableness": 2, "neuroticism": 1, "conscientiousness": 0, "openness": 3, "dominance": 2, "analytical": -2, "creative": 4}
+          }
+        },
+        {
+          "question": "You've made a mistake at work. You...",
+          "choices": {
+            "optionA": "...try to fix it quietly before anyone notices.",
+            "optionB": "...own up to it immediately and ask for help if needed."
+          },
+          "scores": {
+            "optionA": {"extroversion": -2, "agreeableness": 0, "neuroticism": 3, "conscientiousness": 2, "openness": -1, "dominance": -2, "analytical": 2, "creative": -1},
+            "optionB": {"extroversion": 1, "agreeableness": 3, "neuroticism": -2, "conscientiousness": 3, "openness": 2, "dominance": 1, "analytical": 1, "creative": 1}
+          }
+        },
+        {
+          "question": "At a social gathering, you usually...",
+          "choices": {
+            "optionA": "...arrive early and help the host prepare.",
+            "optionB": "...fashionably late when the party is in full swing."
+          },
+          "scores": {
+            "optionA": {"extroversion": -1, "agreeableness": 3, "neuroticism": -2, "conscientiousness": 4, "openness": 1, "dominance": 0, "analytical": 2, "creative": 0},
+            "optionB": {"extroversion": 3, "agreeableness": 1, "neuroticism": 1, "conscientiousness": -2, "openness": 3, "dominance": 2, "analytical": -1, "creative": 2}
+          }
+        },
+        {
+          "question": "When someone shares good news, you...",
+          "choices": {
+            "optionA": "...listen quietly and smile.",
+            "optionB": "...get excited and celebrate with them."
+          },
+          "scores": {
+            "optionA": {"extroversion": -3, "agreeableness": 2, "neuroticism": -1, "conscientiousness": 1, "openness": 0, "dominance": -2, "analytical": 1, "creative": 0},
+            "optionB": {"extroversion": 4, "agreeableness": 3, "neuroticism": -1, "conscientiousness": 0, "openness": 2, "dominance": 2, "analytical": -1, "creative": 1}
+          }
+        },
+        {
+          "question": "You prefer movies that...",
+          "choices": {
+            "optionA": "...make you think deeply about complex themes.",
+            "optionB": "...are action-packed and keep you on the edge of your seat."
+          },
+          "scores": {
+            "optionA": {"extroversion": -2, "agreeableness": 0, "neuroticism": -1, "conscientiousness": 2, "openness": 2, "dominance": 0, "analytical": 4, "creative": 1},
+            "optionB": {"extroversion": 2, "agreeableness": -1, "neuroticism": 2, "conscientiousness": -1, "openness": 1, "dominance": 1, "analytical": -2, "creative": 2}
+          }
+        },
+        {
+          "question": "When planning your weekend, you...",
+          "choices": {
+            "optionA": "...create a schedule with activities.",
+            "optionB": "...see how you feel and decide spontaneously."
+          },
+          "scores": {
+            "optionA": {"extroversion": -1, "agreeableness": 0, "neuroticism": -2, "conscientiousness": 4, "openness": -1, "dominance": 1, "analytical": 3, "creative": -1},
+            "optionB": {"extroversion": 1, "agreeableness": 1, "neuroticism": 2, "conscientiousness": -2, "openness": 3, "dominance": 0, "analytical": -1, "creative": 2}
+          }
+        },
+        {
+          "question": "In a debate, you focus on...",
+          "choices": {
+            "optionA": "...facts and logical arguments.",
+            "optionB": "...emotional impact and personal stories."
+          },
+          "scores": {
+            "optionA": {"extroversion": 0, "agreeableness": -1, "neuroticism": -2, "conscientiousness": 2, "openness": 1, "dominance": 1, "analytical": 4, "creative": -2},
+            "optionB": {"extroversion": 1, "agreeableness": 3, "neuroticism": 2, "conscientiousness": 0, "openness": 3, "dominance": 1, "analytical": -3, "creative": 3}
+          }
+        },
+        {
+          "question": "You learn best when...",
+          "choices": {
+            "optionA": "...studying alone in a quiet environment.",
+            "optionB": "...discussing ideas with others."
+          },
+          "scores": {
+            "optionA": {"extroversion": -4, "agreeableness": 0, "neuroticism": -1, "conscientiousness": 2, "openness": 1, "dominance": -1, "analytical": 3, "creative": 1},
+            "optionB": {"extroversion": 4, "agreeableness": 2, "neuroticism": 0, "conscientiousness": 1, "openness": 2, "dominance": 2, "analytical": -1, "creative": 2}
+          }
+        }
+      ]
+    }
+  ]
+}
